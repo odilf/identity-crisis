@@ -1,0 +1,23 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/typography';
+
+@theme {
+	--color-base: oklch(0.1095 0.0592 329.82);
+	--color-base2: oklch(0.1595 0.0592 309.82);
+	--color-primary: oklch(0.9967 0.0292 90.18);
+	--color-secondary: oklch(0.9 0.1 100.18);
+}
+
+body {
+	/* background-color: var(--color-base); */
+	background: linear-gradient(210deg, var(--color-base), var(--color-base2));
+	color: var(--color-primary);
+	height: 100vh;
+	height: 100dvh;
+	overflow-y: scroll;
+}
+
+.faint {
+	opacity: 50%;
+}
