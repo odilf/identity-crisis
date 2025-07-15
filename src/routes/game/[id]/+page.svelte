@@ -5,12 +5,12 @@
 	import Slider from '$lib/components/Slider.svelte';
 	import { calcSimilarities, calcSimilarity } from '$lib/similarity';
 	import { format, unwrap } from '$lib/utils';
-	import * as z from 'zod';
+	import * as z from 'zod/mini';
+	import * as devalue from 'devalue';
 	import { source } from 'sveltekit-sse';
 	import { invalidateAll } from '$app/navigation';
 	import { onDestroy } from 'svelte';
 	import { browser } from '$app/environment';
-	import { parse } from 'devalue';
 	import { eventSchema } from './event';
 	import { areAllAnswered, getActiveAnswers, getMonarch } from './game';
 
@@ -28,7 +28,7 @@
 				return;
 			}
 
-			const event = z.parse(eventSchema, parse(value));
+			const event = z.parse(eventSchema, devalue.parse(value));
 			if ('playerId' in event && event.playerId === data.user.id) {
 				console.log('Skipping self event: ', event);
 				return;
@@ -86,10 +86,7 @@
 
 		{#if allAnswered}
 			{@const activeAnswers = getActiveAnswers(data.game)}
-			{@const { overall } = calcSimilarities(
-				unwrap(activeAnswers.monarch),
-				activeAnswers.rest
-			)}
+			{@const { overall } = calcSimilarities(unwrap(activeAnswers.monarch), activeAnswers.rest)}
 			<h2>Overall similarity score: {format(overall)}</h2>
 			<h3>Other answers</h3>
 			<ul>

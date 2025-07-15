@@ -1,8 +1,7 @@
 import { relations, sql } from 'drizzle-orm';
-
 import { sqliteTable, integer, text, real, primaryKey, foreignKey } from 'drizzle-orm/sqlite-core';
-
 import { createId } from '@paralleldrive/cuid2';
+import { createSelectSchema } from 'drizzle-zod';
 
 export const user = sqliteTable('user', {
 	id: text('id').primaryKey(),
@@ -42,6 +41,8 @@ export const question = sqliteTable('question', {
 });
 
 export const questionRelations = relations(question, ({ one }) => ({
+	// `followUpQuestion` does *not* have a foreign key constraint because we might
+	// add them out of order, and in fact in writting that's probably more common.
 	followUpQuestion: one(question, {
 		fields: [question.followUpQuestionId],
 		references: [question.id]
@@ -62,7 +63,7 @@ export const game = sqliteTable('game', {
 	turn: integer('turn').default(sql`null`),
 	activeQuestionId: integer('active_question_id')
 		.default(sql`null`)
-		.references(() => question.id)
+		.references(() => question.id, { onDelete: 'set default' })
 });
 
 export const gameRelations = relations(game, ({ one, many }) => ({
@@ -147,3 +148,5 @@ export const rating = sqliteTable('rating', {
 export type Session = typeof session.$inferSelect;
 export type User = typeof user.$inferSelect;
 export type Question = typeof question.$inferSelect;
+
+export const questionSchema = createSelectSchema(question);

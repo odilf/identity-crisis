@@ -1,0 +1,1372 @@
+[[questions]]
+id = 1
+question = "Are you a morning person?"
+answerA = "i see the dawn (waking up)"
+answerB = "i see the dawn (going to bed)"
+hotness = 1
+
+[[questions]]
+id = 2
+question = "Would you kill in the right circumstances?"
+answerA = "There is no such thing"
+answerB = "I would in the wrong circumstances too"
+hotness = 2
+genocideRouteOption = "B"
+
+[[questions]]
+id = 3
+question = "How do you sleep at night?"
+answerA = "sleep is for the weak"
+answerB = "like I never committed the crimes"
+hotness = 1
+
+[[questions]]
+id = 4
+question = "How many teeth do you have?"
+answerA = "25"
+answerB = "250 000"
+hotness = 1
+
+[[questions]]
+id = 5
+question = "How much do you wish to be an animal?"
+answerA = "I'm very happy being human"
+answerB = "in all aspects but physical I am a wolf"
+hotness = 3
+
+[[questions]]
+id = 6
+question = "How do you like your Christmas tree?"
+answerA = "very colorful, to portray the festive spirit"
+answerB = "classy monochrome (i despise joy)"
+hotness = 1
+
+[[questions]]
+id = 7
+question = "How many tiles do you want your piano to have?"
+answerA = "1, like my eye"
+answerB = "as many as my teeth, 88"
+hotness = 3
+
+[[questions]]
+id = 8
+question = "How likely are you to join a cult?"
+answerA = "not at all, they're weird"
+answerB = "now, now, isn't “cult” a bit of a strong word?"
+hotness = 1
+
+[[questions]]
+id = 9
+question = "Are you capable of love?"
+answerA = "yeah :)"
+answerB = "my soul is irreparably tarnished"
+hotness = 1
+
+[[questions]]
+id = 10
+question = "Do you believe?"
+answerA = "yes"
+answerB = "no"
+hotness = 2
+
+[[questions]]
+id = 11
+question = "Wake me up…"
+answerA = "inside"
+answerB = "before you go-go"
+hotness = 1
+
+[[questions]]
+id = 12
+question = "Chocolate?"
+answerA = "white"
+answerB = "100% cacao"
+hotness = 1
+
+[[questions]]
+id = 13
+question = "Your clumsiness index:"
+answerA = "0, banana peels cower in fear when they see me"
+answerB = "100, I fall in zero gravity"
+hotness = 1
+
+[[questions]]
+id = 14
+question = "How good are you with directions?"
+answerA = "call me Mr Worldwide because I've been walking for hours and I still can't find my home"
+answerB = "Google Maps consults *me* for help"
+hotness = 1
+
+[[questions]]
+id = 16
+question = "Is tomato a:"
+answerA = "vegetable"
+answerB = "fruit"
+hotness = 1
+
+[[questions]]
+id = 17
+question = "Are you a TRUE gamer?"
+answerA = "yes, I'm an avid monopoly player"
+answerB = "yes, I haven't showered in a month"
+hotness = 1
+
+[[questions]]
+id = 18
+question = "Would you survive on a deserted island?"
+answerA = "dead within the first 5min"
+answerB = "i would THRIVE"
+hotness = 1
+
+[[questions]]
+id = 19
+question = "Would you still love them if they were a worm?"
+answerA = "no, ew"
+answerB = "yes, always"
+hotness = 1
+
+[[questions]]
+id = 20
+question = "Do you prefer cats or dogs?"
+answerA = "one of the two"
+answerB = "how dare you make me choose"
+hotness = 2
+
+[[questions]]
+id = 21
+question = "Do you like pineapple on pizza?"
+answerA = "no, absolutely not"
+answerB = "sure"
+hotness = 1
+
+[[questions]]
+id = 22
+question = "Your meme expertise?"
+answerA = "LOL XD"
+answerB = "In spring, man built a pillar. In summer, another. Throughout autumn they held, but in winter, one fell."
+hotness = 1
+
+[[questions]]
+id = 23
+question = "What's your general music mood?"
+answerA = "chill"
+answerB = "I need horse tranquilizer"
+hotness = 1
+
+[[questions]]
+id = 24
+question = "How tidy are you?"
+answerA = "I lost one of my brothers in the mess"
+answerB = "the military is begging me to apply"
+hotness = 1
+
+[[questions]]
+id = 25
+question = "How loud are you?"
+answerA = "…"
+answerB = "*airhorn*"
+hotness = 1
+
+[[questions]]
+id = 26
+question = "How popular is the music you listen to?"
+answerA = "I really like this small band that makes music out of recycled plastics"
+answerB = "BTS"
+hotness = 1
+
+[[questions]]
+id = 27
+question = "Your fashion sense?"
+answerA = "I am capable of putting on clothes… sometimes"
+answerB = "designers better take notes"
+hotness = 1
+
+[[questions]]
+id = 28
+question = "Do you prefer the sea or the mountain?"
+answerA = "I dream of not being able to breathe (drowning)"
+answerB = "I dream of not being able to breathe (so high there's not enough oxygen)"
+hotness = 1
+
+[[questions]]
+id = 29
+question = "Your energy level?"
+answerA = "they call me the sloth whisperer"
+answerB = "border collies fear me"
+hotness = 1
+
+[[questions]]
+id = 30
+question = "How gay are you?"
+answerA = "excuse me??"
+answerB = "yes"
+hotness = 3
+
+[[questions]]
+id = 31
+question = "Do you like spongebob?"
+answerA = "yes"
+answerB = "no"
+hotness = 1
+plus1PointOption = "B"
+
+[[questions]]
+id = 32
+question = "So… socks?"
+answerA = "never"
+answerB = "always"
+hotness = 2
+
+[[questions]]
+id = 33
+question = "Do your friends think you're cool?"
+answerA = "yes (they're trying to be nice)"
+answerB = "yes (you’re holding a gun to their head)"
+hotness = 2
+
+[[questions]]
+id = 34
+question = "How easily do you cry with movies?"
+answerA = "more than in real life"
+answerB = "movies cry watching me"
+hotness = 1
+
+[[questions]]
+id = 35
+question = "Which is the best way to update clients?"
+answerA = "tell the news up-front"
+answerB = "what, like in mincecraft? or…?"
+hotness = 2
+
+[[questions]]
+id = 36
+question = "How long can you be on your own before you go insane?"
+answerA = "one day at best, please don't leave me alone"
+answerB = "forever. im working on it"
+hotness = 2
+
+[[questions]]
+id = 37
+question = "Do you prefer sweet or salty food?"
+answerA = "salty, like your tears"
+answerB = "sweet, like the blood of my enemies"
+hotness = 2
+
+[[questions]]
+id = 38
+question = "Do you forget and forgive?"
+answerA = "yes. there’s no reason to hold onto that"
+answerB = "I'm going to my grave with it"
+hotness = 1
+
+[[questions]]
+id = 39
+question = "If you were given the choice to talk to your future or past self, which would you choose?"
+answerA = "future"
+answerB = "past"
+hotness = 1
+
+[[questions]]
+id = 40
+question = "Would you pull the lever?"
+answerA = "yes"
+answerB = "no"
+hotness = 1
+
+[[questions]]
+id = 41
+question = "Is it still Theseus's ship?"
+answerA = "despite everything, it's still you"
+answerB = "no, and it'll never be again"
+hotness = 1
+
+[[questions]]
+id = 42
+question = "Take a guess. Right now, Schrodinger's cat is:"
+answerA = "alive"
+answerB = "dead"
+hotness = 1
+
+[[questions]]
+id = 43
+question = "How busy are you?"
+answerA = "I barely have time to eat"
+answerB = "I always have some extra time to talk to the birds and the trees"
+hotness = 1
+
+[[questions]]
+id = 44
+question = "Your computer knowledge?"
+answerA = "call me hackerman 3000"
+answerB = "I fear cables"
+hotness = 1
+
+[[questions]]
+id = 45
+question = "Will A.I. (or x trend of the moment) revolutionize the world as we know it?"
+answerA = "so, *proceeds to write 30 page essay*"
+answerB = "idk and idc"
+hotness = 2
+
+[[questions]]
+id = 46
+question = "Relationship with your parents?"
+answerA = "who?"
+answerB = "fantastic"
+hotness = 3
+
+[[questions]]
+id = 47
+question = "How many 12 year olds can you take in a fight?"
+answerA = "one at best"
+answerB = "I can do this all day"
+hotness = 2
+
+[[questions]]
+id = 48
+question = "Do you ship ezioleo?"
+answerA = "no"
+answerB = "yes"
+hotness = 5
+knowledge = "Assassin's Creed"
+losesAllPointsOption = "A"
+invincibilityOption = "B"
+
+[[questions]]
+id = 49
+question = "Are you OK with… straight \"people\"?"
+answerA = "maybe? as long as they keep it indoors..."
+answerB = "yes, of course, what are you talking about??"
+hotness = 4
+
+[[questions]]
+id = 50
+question = "Do all children deserve to die?"
+answerA = "no, what the fuck"
+answerB = "yes + I'm an antinatalist"
+hotness = 4
+
+[[questions]]
+id = 51
+question = "Women?"
+answerA = "What about women?"
+answerB = "Women."
+hotness = 4
+
+[[questions]]
+id = 52
+question = "Do you prefer to date older or younger?"
+answerA = "younger, hopefully legal"
+answerB = "older, hopefully legal"
+hotness = 4
+
+[[questions]]
+id = 53
+question = "Why should I not kill you right now?"
+answerA = "I'm so underdressed"
+answerB = "you can try"
+hotness = 3
+
+[[questions]]
+id = 54
+question = "Is Ezio Auditore da Firenze sexist?"
+answerA = "who?"
+answerB = "yes"
+hotness = 2
+knowledge = "Assassin's Creed"
+losesAllPointsOption = "A"
+jailOption = "A"
+
+[[questions]]
+id = 55
+question = "Is Sylvain José Gautier sexist?"
+answerA = "WHO?"
+answerB = "yes, absolutely"
+hotness = 1
+knowledge = "Fire Emblem"
+
+[[questions]]
+id = 56
+question = "Do you think Sylvain José Gautier is bi or just gay?"
+answerA = "I don't like to speculate on someone's sexuality"
+answerB = "definitely bi"
+hotness = 5
+knowledge = "Fire Emblem"
+
+[[questions]]
+id = 57
+question = "If Claude, heir of House Riegan and leader of the Leicester Alliance, gave you a drink, would you drink it?"
+answerA = "yes"
+answerB = "no"
+hotness = 5
+knowledge = "Fire Emblem"
+
+[[questions]]
+id = 58
+question = "Are you capable of holding diverse conversations and discussing various topics?"
+answerA = "yes, obviously???"
+answerB = "idk, but do you know fire emblem?"
+hotness = 2
+
+[[questions]]
+id = 59
+question = "Do you prefer hot or cold weather?"
+answerA = "throw me in the Sahara desert"
+answerB = "I would live in my freezer if I could"
+hotness = 1
+
+[[questions]]
+id = 60
+question = "Do you tend to wear colorful or monochrome clothes?"
+answerA = "I'm ready for a funeral at any given moment"
+answerB = "I work for Desigual"
+hotness = 1
+
+[[questions]]
+id = 61
+question = "Are you a proshipper or anti?"
+answerA = "pro, no law will stop me"
+answerB = "anti, I am the fandom inquisition"
+hotness = 5
+knowledge = "Fandom"
+
+[[questions]]
+id = 62
+question = "PC or Console?"
+answerA = "PC will always be superior"
+answerB = "Console"
+hotness = 2
+
+[[questions]]
+id = 63
+question = "Do you trust easily?"
+answerA = "I will tell you my deepest darkest secrets upon the first meeting"
+answerB = "I might open up a little after 5 years of knowing you"
+hotness = 1
+
+[[questions]]
+id = 64
+question = "Is Ezio a top or a bottom?"
+answerA = "These questions are **not** OK + I couldn't care less about this man"
+answerB = "please, have you seen the start of brotherhood?"
+hotness = 5
+knowledge = "Assassin's Creed"
+
+[[questions]]
+id = 65
+question = "So, on the topic of Ezio-"
+answerA = "who"
+answerB = "…Yes?"
+hotness = 4
+knowledge = "Assassin's Creed"
+losesAllPointsOption = "A"
+beheadingOption = "A"
+
+[[questions]]
+id = 66
+question = "Do you see yourself more as a cop or a criminal?"
+answerA = "I've been running from the police for years"
+answerB = "I am very racist"
+hotness = 2
+
+[[questions]]
+id = 67
+question = "Do you prefer your music acoustic?"
+answerA = "yes, I'm an ukele enthusiast"
+answerB = "my brain is permanently damaged from hyperpop"
+hotness = 3
+
+[[questions]]
+id = 68
+question = "Do you prefer the village or the city?"
+answerA = "Single house in the middle of nowhere"
+answerB = "New York, Tokyo, and cities alike, are my dream"
+hotness = 1
+
+[[questions]]
+id = 69
+question = "If you had to choose between the key to immortality and finding the cure to all illness, which one would you pick?"
+answerA = "I want to live forever, disease is inevitable"
+answerB = "Disease is evitable, but death is fundamental to the human condition"
+hotness = 1
+
+[[questions]]
+id = 70
+question = "How much of a fast learner are you?"
+answerA = "Very slow, and it's actually a bit of a sore spot so I don't appreciate this question very much"
+answerB = "Oh, you were talking to me? The town genius?"
+hotness = 1
+
+[[questions]]
+id = 71
+question = "In your opinion, chess is:"
+answerA = "A wonderful game I'm very passionate about"
+answerB = "Super boring and for nerds"
+hotness = 1
+plus1PointOption = "B"
+
+[[questions]]
+id = 72
+question = "Do you feel like your dreams have meaning?"
+answerA = "Of course, dreams are a fascinating part of our subconscious"
+answerB = "No, they're incredibly uninteresting and pointless (i am allergic to whimsy)"
+hotness = 1
+
+[[questions]]
+id = 73
+question = "Do your friends find you ugly?"
+answerA = "No (they're lying)"
+answerB = "No (they're ugly)"
+hotness = 2
+followUpQuestionId = "74"
+
+[[questions]]
+id = 74
+question = "Do YOU find your friends ugly?"
+answerA = "Oh, that’s an uncomfortable position to be in (yes)"
+answerB = "Absolutely not! (yes, but you’re comfortable with lying)"
+hotness = 1
+
+[[questions]]
+id = 75
+question = "Are you proud of your ASSets?"
+answerA = "What the fuck is this question"
+answerB = "I'm proud of everything about myself, thank you very much"
+hotness = 3
+
+[[questions]]
+id = 76
+question = "which resonates most with you?"
+answerA = "( •̀ ᴖ •́ )"
+answerB = "(╥﹏╥)"
+hotness = 1
+
+[[questions]]
+id = 77
+question = "How much do you like bittersweet endings in stories?"
+answerA = "I want to, and will, cry by the end"
+answerB = "Ew"
+hotness = 1
+
+[[questions]]
+id = 78
+question = "How much do you like open ended endings?"
+answerA = "How would I know?"
+answerB = "Please just get to the point"
+hotness = 1
+
+[[questions]]
+id = 79
+question = "How often do you get angry?"
+answerA = "( •̀ ᴖ •́ ) what do you think"
+answerB = "Anger… yes, that is a feeling I once felt... long ago…"
+hotness = 1
+
+[[questions]]
+id = 80
+question = "How much do you sleep?"
+answerA = "sleep?"
+answerB = "I hibernate"
+hotness = 1
+
+[[questions]]
+id = 81
+question = "How quickly do you fall asleep?"
+answerA = "Like a knockout"
+answerB = "I can only hope the demons will release my body before dawn"
+hotness = 1
+
+[[questions]]
+id = 82
+question = "How much of a nerd are you?"
+answerA = "🤓☝️ Uhm, actually-"
+answerB = "fifa"
+hotness = 1
+
+[[questions]]
+id = 83
+question = "Big phone or small phone?"
+answerA = "What's the point of a handheld phone if my one hand cannot actually hold it anymore????"
+answerB = "If I could use an iPad as a phone, I would"
+hotness = 1
+
+[[questions]]
+id = 84
+question = "How attached to material possessions are you?"
+answerA = "I cannot move on, and I ran out of space a while ago"
+answerB = "The material world is meaningless to me"
+hotness = 1
+
+[[questions]]
+id = 85
+question = "Does envy come easy to you?"
+answerA = "Yes, all the time I see people living lives I wish I had"
+answerB = "No, I've found peace"
+hotness = 1
+
+[[questions]]
+id = 86
+question = "Are white socks a crime?"
+answerA = "What are you talking about?"
+answerB = "END WHITE SOCK SUPREMACY! AWSAB!"
+hotness = 2
+
+[[questions]]
+id = 87
+question = "Opinion on Hydrogens?"
+answerA = "People deserve agency over their own bodies"
+answerB = "I don't have strong opinions about the periodic table and its elements"
+hotness = 5
+
+[[questions]]
+id = 88
+question = "How quick are your reflexes?"
+answerA = "Like a cheetah's"
+answerB = "Can you repeat the question? I didn't catch it"
+hotness = 1
+
+[[questions]]
+id = 89
+question = "About Jeans…"
+answerA = "cool item, they go with just about anything"
+answerB = "they're hellsent, burn them all"
+hotness = 1
+
+[[questions]]
+id = 90
+question = "Do you judge a lot?"
+answerA = "Hm, I don't know about this question…"
+answerB = "I don't care enough to do so, honestly"
+hotness = 1
+
+[[questions]]
+id = 91
+question = "Do you enjoy things?"
+answerA = "Shut up"
+answerB = "Yes! Life is beautiful!"
+hotness = 1
+
+[[questions]]
+id = 92
+question = "I love you."
+answerA = "I love you too :)"
+answerB = "If only anyone could ever love you"
+hotness = 3
+
+[[questions]]
+id = 93
+question = "Do you look at yourself in the mirror often?"
+answerA = "constantly. I'm either terribly self-conscious or incredibly superficial, won't tell you which one though 🫢"
+answerB = "I don't remember what I look like anymore (vampirism)"
+hotness = 2
+
+[[questions]]
+id = 94
+question = "How much do you think?"
+answerA = "Please make it stop"
+answerB = "I have… thoughts… sometimes…?"
+hotness = 1
+
+[[questions]]
+id = 95
+question = "How do you know you are alive?"
+answerA = "Who said I am?"
+answerB = "I think. "
+hotness = 1
+
+[[questions]]
+id = 96
+question = "What kind of gay are you?"
+answerA = "🧍"
+answerB = "💃"
+hotness = 2
+
+[[questions]]
+id = 97
+question = "Is the matrix real?"
+answerA = "**Wake up**"
+answerB = "What are you on about?"
+hotness = 1
+knowledge = "Movies"
+
+[[questions]]
+id = 98
+question = "Which one would you take?"
+answerA = "blue pill"
+answerB = "red pill"
+hotness = 1
+knowledge = "Movies"
+
+[[questions]]
+id = 99
+question = "How many shoes do you usually wear?"
+answerA = "two… obviously????"
+answerB = "1-3, depending on the day"
+hotness = 2
+
+[[questions]]
+id = 100
+question = "Headphones or earbuds?"
+answerA = "I love my big headphones"
+answerB = "The flexibility earbuds offer is unbeatable"
+hotness = 1
+
+[[questions]]
+id = 101
+question = "Was that a canon event?"
+answerA = "… yes."
+answerB = "what are you talking about?"
+hotness = 4
+
+[[questions]]
+id = 102
+question = "In the end of Life is Strange, would you:"
+answerA = "Sacrifice Chloe"
+answerB = "Sacrifice Arcadia Bay"
+hotness = 4
+knowledge = "Life is Strange"
+
+[[questions]]
+id = 103
+question = "Is Philosophy the acceptance of/making peace with death?"
+answerA = "Yes (I am Plato himself)"
+answerB = "No, and fuck that guy (Nietzsche)"
+hotness = 3
+
+[[questions]]
+id = 104
+question = "So,"
+answerA = "♀️"
+answerB = "♂️"
+hotness = 5
+
+[[questions]]
+id = 105
+question = "How long are your showers/baths?"
+answerA = "I need to get out before they get me"
+answerB = "I was single when I got in. Had a family by the time I was out."
+hotness = 1
+
+[[questions]]
+id = 106
+question = "Do you support women's rights?"
+answerA = "Yes"
+answerB = "I support women's wrongs"
+hotness = 1
+
+[[questions]]
+id = 107
+question = "Do you like baths?"
+answerA = "Yes, who doesn't? They're so relaxing"
+answerB = "*hisses*"
+hotness = 1
+
+[[questions]]
+id = 108
+question = "So, math?"
+answerA = "*Vietnam flashbacks*"
+answerB = "no you don’t understand. everything… everything can be explained by-"
+hotness = 1
+
+[[questions]]
+id = 109
+question = "Clothes are meant to…"
+answerA = "instill fear in the enemy"
+answerB = "instill pizzaz in the soul"
+hotness = 1
+
+[[questions]]
+id = 110
+question = "Dress to:"
+answerA = "impress"
+answerB = "depress"
+hotness = 1
+
+[[questions]]
+id = 111
+question = "Are you chill?"
+answerA = "Like the poles"
+answerB = "The poles are melting because of climate change"
+hotness = 1
+
+[[questions]]
+id = 112
+question = "Are you violent?"
+answerA = "**What did you just call me?!**"
+answerB = "The most violent thing about me are my sneezes, haha, get it?"
+hotness = 1
+
+[[questions]]
+id = 113
+question = "Do people find you funny?"
+answerA = "No, but jokes on them, I'm actually hilarious"
+answerB = "Yes, though sometimes I wish they could see beyond the facade of my jestering ways"
+hotness = 1
+
+[[questions]]
+id = 114
+question = "Do you feel seen?"
+answerA = "I feel exposed, it's different"
+answerB = "If only someone would ever so much as glance my way"
+hotness = 1
+
+[[questions]]
+id = 115
+question = "Would you rather get 1 million € or bring one fictional character to life?"
+answerA = "Money, money, money!"
+answerB = "I would kill to be able to talk to ___"
+hotness = 1
+
+[[questions]]
+id = 116
+question = "Would you rather have a wallet with infinite cash or have the ability to stop time?"
+answerA = "Money, money, money!"
+answerB = "Stopping time would be more useful"
+hotness = 1
+
+[[questions]]
+id = 117
+question = "Do you fall in love easily?"
+answerA = "Yes, I'm clumsy"
+answerB = "I'm a tight rope expert. Can’t fall. I’ll die."
+hotness = 1
+
+[[questions]]
+id = 118
+question = "Would you say you're repetitive?"
+answerA = "If I'm repetitive, you say?"
+answerB = "I'm in constant movement, everchanging, like a river"
+hotness = 1
+
+[[questions]]
+id = 119
+question = "Routine?"
+answerA = "I need it to function"
+answerB = "I refuse the shackles of modern society"
+hotness = 1
+
+[[questions]]
+id = 120
+question = "Do you talk a lot?"
+answerA = "Putting me underwater won't stop me"
+answerB = "…"
+hotness = 1
+
+[[questions]]
+id = 121
+question = "How fast are you?"
+answerA = "I made Sonic cry"
+answerB = "Snails make me cry"
+hotness = 1
+
+[[questions]]
+id = 122
+question = "Would you consider yourself a rebel?"
+answerA = "Rules were made to be broken"
+answerB = "Rules WERE NOT made to be broken and whoever says that is a huge fucking idiot"
+hotness = 1
+jailOption = "A"
+
+[[questions]]
+id = 123
+question = "Do you say what you think?"
+answerA = "Yes, filters are for pussies"
+answerB = "Wouldn't you like to know, weatherboy"
+hotness = 2
+
+[[questions]]
+id = 124
+question = "Fight or flight?"
+answerA = "fight"
+answerB = "flight"
+hotness = 1
+jailOption = "A"
+
+[[questions]]
+id = 125
+question = "How much of a dancer are you?"
+answerA = "As much as these guys that advertise stores moving in the wind"
+answerB = "I'm a professional dancer"
+hotness = 1
+
+[[questions]]
+id = 126
+question = "Would you say you’re more of a Sonic or a Shadow type of hedgehog?"
+answerA = "Ha! Isn’t it obvious?"
+answerB = "Hmfp. What a stupid question."
+hotness = 3
+
+[[questions]]
+id = 127
+question = "Is the JJK ending canon?"
+answerA = "Absolutely not."
+answerB = "yes. (are you gege?)"
+hotness = 3
+knowledge = "Anime"
+invincibilityOption = "A"
+
+[[questions]]
+id = 128
+question = "Is Satoru Gojo the strongest?"
+answerA = "Yes, he’s got the six eyes and limitless"
+answerB = "Or does being the strongest make him Satoru Gojo?"
+hotness = 4
+knowledge = "Anime"
+
+[[questions]]
+id = 129
+question = "Your boyfriend decided to commit genocide, you:"
+answerA = "Support him. Can’t a girl have hobbies?"
+answerB = "what in the actual f-"
+hotness = 5
+
+[[questions]]
+id = 130
+question = "So, about Suguru Geto…"
+answerA = "the anime villain?"
+answerB = "live laugh geto <3"
+hotness = 4
+knowledge = "Anime"
+
+[[questions]]
+id = 131
+question = "black and white makes me think of:"
+answerA = "ying-yang"
+answerB = "yaoi"
+hotness = 5
+
+[[questions]]
+id = 132
+question = "My body is:"
+answerA = "a temple"
+answerB = "luigi’s mansion"
+hotness = 2
+
+[[questions]]
+id = 133
+question = "Is the body the prison of the soul?"
+answerA = "Unfortunately so"
+answerB = "Idk, but it sure is about to become the home of all this booze, watch"
+hotness = 2
+
+[[questions]]
+id = 134
+question = "Do you have a curse for me stuck at the back of your throat?"
+answerA = "Yes. It’s the unspoken promise that says “we’ll see eachother again, won’t we?”"
+answerB = "No. I don’t hold grudges, I move on."
+hotness = 5
+
+[[questions]]
+id = 135
+question = "Will hubris be your downfall?"
+answerA = "Nah, I’d win"
+answerB = "”all good men should desire to live in peace. What purpose does bloody conflict serve but to create suffering, a suffering that amuses only Gods and monsters? I refuse to live for anyone’s amusement.”"
+hotness = 5
+losesAllPointsOption = "A"
+jailOption = "A"
+
+[[questions]]
+id = 136
+question = "Who would win?"
+answerA = "Gojo"
+answerB = "Kirby"
+hotness = 3
+
+[[questions]]
+id = 137
+question = "Is there a point in killing?"
+answerA = "no! absolutely not!"
+answerB = "it’s a tool like any other"
+hotness = 1
+genocideRouteOption = "B"
+
+[[questions]]
+id = 138
+question = "Who would you go to in difficult times?"
+answerA = "to Mr Pit the Bull, ”been there, done that, dale!”"
+answerB = "Luigi"
+hotness = 1
+
+[[questions]]
+id = 139
+question = "“satosugu is canon” I say into the mic:"
+answerA = "the crowd boos. i begin to walk off in shame"
+answerB = "when a voice speaks up and commands silence from the room, “she’s right.” they say. i look for the owner of the voice. there, in the 3rd row stands Gege Akutami himself"
+hotness = 5
+knowledge = "Anime"
+invincibilityOption = "B"
+
+[[questions]]
+id = 140
+question = "no beta we die like:"
+answerA = "men"
+answerB = "glenn"
+hotness = 5
+knowledge = "Fandom"
+plus1PointOption = "B"
+
+[[questions]]
+id = 141
+question = "deus ex:"
+answerA = "machina"
+answerB = "shoko"
+hotness = 5
+
+[[questions]]
+id = 142
+question = "Is it lupus?"
+answerA = "?? maybe?? how would i know??"
+answerB = "it’s never lupus."
+hotness = 4
+plus1PointOption = "B"
+
+[[questions]]
+id = 143
+question = "How many bisexual characters are there in the show House MD?"
+answerA = "Thirteen only"
+answerB = "Definitely 2, and maybe a couple or so more"
+hotness = 5
+knowledge = "House MD"
+
+[[questions]]
+id = 144
+question = "“Do they know it’s legal?”"
+answerA = "actually, it wasn’t <\\3"
+answerB = "yeah. it’s probably queerbait."
+hotness = 4
+knowledge = "Fandom"
+
+[[questions]]
+id = 145
+question = "Edelgard…"
+answerA = "did nothing wrong"
+answerB = "***\"I will hang your head at the gates of Enbarr!\"***"
+hotness = 5
+knowledge = "Fire Emblem"
+jailOption = "A,B"
+
+[[questions]]
+id = 146
+question = "Everyday, I wake up"
+answerA = "*cries, smashes wall*"
+answerB = "and thank god"
+hotness = 2
+
+[[questions]]
+id = 147
+question = "Mario Kart is"
+answerA = "a great game to casually play with friends"
+answerB = "NOT a game. It's a lifestyle, a people, a creed. Ultimately, it's a-me; Mario."
+hotness = 2
+
+[[questions]]
+id = 148
+question = "I'd rather shower"
+answerA = "in the morning"
+answerB = "before bed"
+hotness = 1
+
+[[questions]]
+id = 149
+question = "About your haircare…"
+answerA = "just found a 25 in 1 super deal!"
+answerB = "a whole day is dedicated to it"
+hotness = 1
+jailOption = "A"
+
+[[questions]]
+id = 150
+question = "How alt would you consider yourself?"
+answerA = "not at all, i'm the average personified"
+answerB = "you will never catch me Gauss!"
+hotness = 1
+
+[[questions]]
+id = 151
+question = "Summer or Winter?"
+answerA = "summer. obviously. you know i'm right. "
+answerB = "winter! clearly! summer people are absolute idiots, you can always put on more layers but you can't take off your skin (hopefully)!"
+hotness = 1
+
+[[questions]]
+id = 152
+question = "You are"
+answerA = "short"
+answerB = "tall"
+hotness = 1
+beheadingOption = "B"
+
+[[questions]]
+id = 153
+question = "coffee or tea"
+answerA = "coffee"
+answerB = "chai"
+hotness = 1
+
+[[questions]]
+id = 154
+question = "earthquakes or hurricanes?"
+answerA = "earthquakes"
+answerB = "hurricanes"
+hotness = 1
+
+[[questions]]
+id = 155
+question = "Do you see that in the distance?"
+answerA = "Yes, but fear not, I've been preparing for this *gallops into it with sword in hand*"
+answerB = "I think they're windmills..."
+hotness = 2
+losesAllPointsOption = "A"
+
+[[questions]]
+id = 156
+question = "DC vs Marvel"
+answerA = "  DC"
+answerB = "Marvel"
+hotness = 1
+
+[[questions]]
+id = 157
+question = "how do you go to work?"
+answerA = "I don't think I can, my limbs look like those of an insect and my body feels wrong"
+answerB = "by car"
+hotness = 3
+
+[[questions]]
+id = 158
+question = "be honest, was Helen worth it?"
+answerA = "\"what, of course!\" (Agamemnon may be holding a knife to your neck)"
+answerB = "*a soldier is sitting, staring at the ground. He's been in that spot since yesterday.* \"it'll be quick they said.\""
+hotness = 2
+
+[[questions]]
+id = 159
+question = "If you don't like your prophecy, shall you go against it?"
+answerA = "Yes, I am the master of my own destiny."
+answerB = "*You fool.*"
+hotness = 3
+
+[[questions]]
+id = 160
+question = "Iliad or Odyssey?"
+answerA = "Iliad"
+answerB = "Odyssey"
+hotness = 1
+jailOption = "A"
+
+[[questions]]
+id = 161
+question = "Pagan or Christian?"
+answerA = "Those Jesus weirdos copied our thing!!"
+answerB = "Anyone who does not see the one path of god must be eliminated."
+hotness = 2
+
+[[questions]]
+id = 162
+question = "You are a Roman emperor:"
+answerA = "you order to kill those radicals preaching about leaving material possessions behind, that do not fear Jupiter and his kin, as they are becoming a threat"
+answerB = "actually, you know what, since these guys are so popular, why not integrate them? we're going to be the christian roman empire"
+hotness = 2
+beheadingOption = "A"
+
+[[questions]]
+id = 163
+question = "coffee or weed"
+answerA = "coffee"
+answerB = "weed"
+hotness = 2
+
+[[questions]]
+id = 164
+question = "illegal immigrants (savages) come from the…"
+answerA = "north (you're a racist roman (BCE))"
+answerB = "south (you're a racist roman (ACE))"
+hotness = 3
+
+[[questions]]
+id = 165
+question = "Favorite way of being toxic?"
+answerA = "dismissing all their experiences/opinions/feelings as being dramatic and/or irrational"
+answerB = "badmouthing them and spreading rumors  behind their back"
+hotness = 2
+
+[[questions]]
+id = 166
+question = "your profession:"
+answerA = "freelance chemistry"
+answerB = "accountant"
+hotness = 3
+
+[[questions]]
+id = 167
+question = "how much do you like people?"
+answerA = "they're alright ig"
+answerB = "\"And so what shall we wonder at? Our murders and massacres and missiles, and our irreconcilable regiments? Or our treaties whatever they may be worth; our symphonies however seldom they may be played; our peaceful acres, however frequently they may be converted into battlefields; our dreams however rarely they may be accomplished.\""
+hotness = 4
+
+[[questions]]
+id = 168
+question = "iron man vs captain america "
+answerA = "Iron Man"
+answerB = "Captain America"
+hotness = 1
+
+[[questions]]
+id = 169
+question = "spicy vs acidic"
+answerA = "like these questions, spicy"
+answerB = "like your face, acidic"
+hotness = 2
+
+[[questions]]
+id = 170
+question = "are there more doors or wheels"
+answerA = "doors"
+answerB = "wheels"
+hotness = 1
+
+[[questions]]
+id = 171
+question = "who killed John F. Kennedy?"
+answerA = "Osama Bin Laden"
+answerB = "Toji"
+hotness = 2
+knowledge = "Anime"
+
+[[questions]]
+id = 172
+question = "Does the collatz conjecture hold?"
+answerA = "yes"
+answerB = "no"
+hotness = 2
+knowledge = "Math"
+
+[[questions]]
+id = 173
+question = "Does the Riemann hypothesis hold?"
+answerA = "yes"
+answerB = "no"
+hotness = 1
+knowledge = "Math"
+
+[[questions]]
+id = 174
+question = "Where is Osama Bin Laden?"
+answerA = "dead??? *obviously????*"
+answerB = "in my basement, don't tell anyone"
+hotness = 2
+
+[[questions]]
+id = 175
+question = "Instagram vs Pinterest"
+answerA = "instaaaa"
+answerB = "pinterest ftw"
+hotness = 1
+followUpQuestionId = "B"
+
+[[questions]]
+id = 176
+question = "\"Hey kid, I have candy.\""
+answerA = "*walk away faster*"
+answerB = "*go into the van*"
+hotness = 3
+
+[[questions]]
+id = 177
+question = "Guitar vs Bass?"
+answerA = "guitar"
+answerB = "bass"
+hotness = 1
+plus1PointOption = "B"
+
+[[questions]]
+id = 178
+question = "estimate the square root of 2"
+answerA = "0"
+answerB = "2"
+hotness = 2
+
+[[questions]]
+id = 179
+question = "Where is the answer?"
+answerA = "0"
+answerB = "60"
+hotness = 3
+
+[[questions]]
+id = 180
+question = "When will it be the year of desktop Linux?"
+answerA = "Now! (current year)"
+answerB = "current year with an extra zero"
+hotness = 3
+
+[[questions]]
+id = 181
+question = "Who's the best rapper?"
+answerA = "Eminem"
+answerB = "Shakespeare"
+hotness = 2
+
+[[questions]]
+id = 182
+question = "If you had to pick:"
+answerA = "public transport"
+answerB = "cars (vroom vroom)"
+hotness = 1
+losesAllPointsOption = "A"
+
+[[questions]]
+id = 183
+question = "Would you like to live in your favorite universe's world?"
+answerA = "YES! Howgarts here I come!"
+answerB = "great universe, don't get me wrong, but I'd rather not"
+hotness = 2
+
+[[questions]]
+id = 184
+question = "Would you sacrifice the one person you care for the most, or everybody else?"
+answerA = "my one and only is dead by my own hand"
+answerB = "i couldn't care less about you losers"
+hotness = 3
+genocideRouteOption = "B"
+followUpQuestionId = "186"
+followUpConditionOption = "A"
+
+[[questions]]
+id = 185
+question = "Do you have a bomb?"
+answerA = "what the hell, no!"
+answerB = "... possibly"
+hotness = 3
+followUpQuestionId = "187"
+followUpConditionOption = "B"
+
+[[questions]]
+id = 186
+question = "How much do you value your life?"
+answerA = "very much! it's my life after all"
+answerB = "eh"
+hotness = 4
+followUpQuestionId = "185"
+followUpConditionOption = "B"
+
+[[questions]]
+id = 187
+question = "Where are you?"
+answerA = "why do you care?"
+answerB = "*give adress*"
+hotness = 4
+
+[[questions]]
+id = 188
+question = "Do you think you could handle being God?"
+answerA = "or would the power corrupt you beyond recognition? would your hands be the same if tainted with all their blood? would you be feared for your arbitrary judgement? would you punish those who doubt? those who don't believe? would you eat your own father in fear of not being the almighty? would you kill your mother too? your brother? your child? would you become everything you've ever hated? sit alone in a cold throne?"
+answerB = "yeah, sure, no prob"
+hotness = 5
+
+[[questions]]
+id = 189
+question = "Any questions?"
+answerA = "so many..."
+answerB = "nah, I'm good."
+hotness = 0
