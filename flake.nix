@@ -16,12 +16,17 @@
         "x86_64-darwin"
       ];
 
+      flake = {
+        nixosModules.default = import ./module.nix;
+      };
+
       perSystem =
         {
           pkgs,
           ...
         }:
         {
+          packages.default = pkgs.callPackage ./default.nix;
           devShells.default = pkgs.mkShell {
             packages = [
               pkgs.pnpm
