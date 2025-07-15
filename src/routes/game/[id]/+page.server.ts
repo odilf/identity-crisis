@@ -23,11 +23,13 @@ export const load: PageServerLoad = async ({ params }) => {
 	});
 
 	if (game === undefined) {
+		// Game doesn't exist
 		throw redirect(302, '/game');
 	}
 
 	const inGame = game.players.some(({ playerId }) => playerId === user.id);
-	if (game.turn === null && !inGame) {
+	if (game.activeQuestion !== null && !inGame) {
+		// Started game that isn't the user's
 		throw redirect(302, '/game');
 	}
 

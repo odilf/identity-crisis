@@ -74,7 +74,7 @@
 			<div class="mr-auto w-[70%] text-left">{data.game.activeQuestion.answerA}</div>
 			<Slider
 				value={data.answer?.value ?? 0.5}
-				disabled={allAnswered}
+				locked={allAnswered}
 				onpress={() => unsubmitButton?.click()}
 				onrelease={() => formElem?.submit()}
 			/>
@@ -87,15 +87,21 @@
 		{#if allAnswered}
 			{@const activeAnswers = getActiveAnswers(data.game)}
 			{@const { overall } = calcSimilarities(unwrap(activeAnswers.monarch), activeAnswers.rest)}
-			<h2>Overall similarity score: {format(overall)}</h2>
-			<h3>Other answers</h3>
+			<h2 class="text-2xl text-center">Overall similarity score: <span class="font-bold text-5xl">{format(overall)}</span></h2>
+			<h3>Monarch's ({data.game.players.find((player) => player.playerId === unwrap(activeAnswers.monarch).playerId)?.player.username}) answer</h3>
+			<div>
+				<Slider value={unwrap(activeAnswers.monarch).value} locked={true} />
+			</div>
+			<h3 class="font-bold text-xl">Other answers</h3>
 			<ul>
 				{#each activeAnswers.rest as answer}
 					<li>
-						{data.game.players.find((player) => player.playerId === answer.playerId)?.player
-							.username}
-						<Slider value={answer.value} disabled={true} />
-						{format(calcSimilarity(answer, unwrap(activeAnswers.monarch)))}
+						<div>
+							{data.game.players.find((player) => player.playerId === answer.playerId)?.player
+							.username}'s answer
+							({format(calcSimilarity(answer, unwrap(activeAnswers.monarch)))} match)
+						</div>
+						<Slider value={answer.value} locked={true} />
 					</li>
 				{/each}
 			</ul>

@@ -21,10 +21,7 @@ export const POST: RequestHandler = async ({ params, request }) => {
 			}
 			const subs = unwrap(subscribers.get(params.id));
 			subs.add(emit);
-
-			if (subs.size > 2) {
-				throw new Error(`Too many subscribers on game ${params.id} (${subs.size})`);
-			}
+			console.log(`${subs.size} subscribers for ${params.id}`)
 		},
 		{
 			stop: () => {
