@@ -1,3 +1,3 @@
 # who am i
 
-A social question game. 
+A social question game.

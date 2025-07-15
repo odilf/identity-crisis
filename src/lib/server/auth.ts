@@ -83,6 +83,7 @@ export function deleteSessionTokenCookie(event: RequestEvent) {
 	event.cookies.delete(sessionCookieName, { path: '/' });
 }
 
+// TODO: This name is not great
 export function requireLoginInsideLoad(): User {
 	const { locals, cookies, url } = getRequestEvent();
 

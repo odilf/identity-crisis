@@ -4,6 +4,7 @@ import { redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { and, eq } from 'drizzle-orm';
 import { unwrap } from '$lib/utils';
+import { emit } from './+server';
 
 export const load: PageServerLoad = async ({ params }) => {
 	const user = requireLoginInsideLoad();
@@ -37,6 +38,7 @@ export const load: PageServerLoad = async ({ params }) => {
 			playerId: user.id,
 			index: game.players.length
 		});
+		emit(params.id, { event: 'playerConnected', playerId: user.id });
 	}
 
 	// Get answer, if it exists
@@ -52,18 +54,10 @@ export const load: PageServerLoad = async ({ params }) => {
 		});
 	}
 
-	const activeAnswersAll = game.answers.filter(({ index }) => index === game.turn)
-	const monarch = game.players[unwrap(game.turn) % game.players.length]
-	const activeAnswers = {
-		monarch: activeAnswersAll.find(answer => answer.playerId === monarch.playerId),
-		rest: activeAnswersAll.filter(answer => answer.playerId !== monarch.playerId),
-	}
-
 	return {
 		game,
 		user,
-		answer,
-		activeAnswers,
+		answer
 	};
 };
 
@@ -88,6 +82,7 @@ async function selectQuestion(
 export const actions: Actions = {
 	start: async ({ params }) => {
 		await selectQuestion(0, params.id);
+		emit(params.id, { event: 'start' });
 	},
 
 	submit: async ({ params, request }) => {
@@ -137,7 +132,7 @@ export const actions: Actions = {
 				game.answers.filter(({ index }) => index === game.turn).length + 1 >=
 				game.players.length
 			) {
-				console.warn('Everyone has answered');
+				emit(params.id, { event: 'allSubmitted', lastPlayerId: user.id });
 			}
 		});
 	},
@@ -188,5 +183,6 @@ export const actions: Actions = {
 		}
 
 		await selectQuestion(unwrap(game.turn) + 1, params.id);
+		emit(params.id, { event: 'continue' });
 	}
 };
