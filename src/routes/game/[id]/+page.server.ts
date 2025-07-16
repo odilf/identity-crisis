@@ -65,7 +65,7 @@ export const load: PageServerLoad = async ({ params }) => {
 	return {
 		game,
 		user,
-		answer
+		answer,
 	};
 };
 
@@ -133,27 +133,27 @@ export const actions: Actions = {
 
 	submit: async ({ params, request }) => {
 		const user = requireLoginInsideLoad();
-		const [game, data] = await Promise.all([
-			db.query.game.findFirst({
-				where: (game, { eq, and }) => and(eq(game.id, params.id), eq(game.finished, false)),
-				with: {
-					answers: true,
-					players: true
-				}
-			}),
-			request.formData()
-		]);
-
-		if (game === undefined || game.turn === null) {
-			throw new Error("unreachable (game or game's turn is null)");
-		}
-
-		const value = parseFloat(data.get('value')?.toString() ?? '');
-		if (isNaN(value)) {
-			throw new Error('Slider value was NaN!');
-		}
-
 		await db.transaction(async (tx) => {
+			const [game, data] = await Promise.all([
+				tx.query.game.findFirst({
+					where: (game, { eq, and }) => and(eq(game.id, params.id), eq(game.finished, false)),
+					with: {
+						answers: true,
+						players: true
+					}
+				}),
+				request.formData()
+			]);
+
+			if (game === undefined || game.turn === null) {
+				throw new Error("unreachable (game or game's turn is null)");
+			}
+
+			const value = parseFloat(data.get('value')?.toString() ?? '');
+			if (isNaN(value)) {
+				throw new Error('Slider value was NaN!');
+			}
+
 			await tx
 				.insert(schema.answer)
 				.values({

@@ -7,42 +7,42 @@
 	import { format, unwrap } from '$lib/utils';
 	import * as z from 'zod/mini';
 	import * as devalue from 'devalue';
-	import { source } from 'sveltekit-sse';
 	import { invalidateAll } from '$app/navigation';
-	import { onDestroy } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import { browser } from '$app/environment';
 	import { eventSchema } from './event';
 	import { areAllAnswered, getActiveAnswers, getMonarch } from './game';
 	import Button from '$lib/components/Button.svelte';
 
 	let { data }: PageProps = $props();
-	let formElem: HTMLFormElement | null = $state(null);
+	// let formElem: HTMLFormElement | null = $state(null);
+	let submitButton: HTMLButtonElement | null = $state(null);
 	let unsubmitButton: HTMLButtonElement | null = $state(null);
 
-	// TODO: This seems to be erroring...
-	// `Uncaught (in promise) TypeError: NetworkError when attempting to fetch resource.`
-	// I'm not sure why it is.
-	const unsubscribe = source(`/game/${data.game.id}`)
-		.select('update')
-		.subscribe(async (updateString) => {
-			// I'm not sure why this happens...
-			if (updateString === '') {
-				return;
-			}
+	onMount(() => {
+		fetch(`/game/${data.game.id}`, { method: 'post' })
+			.then(async (response) => {
+				if (response.body === null) {
+					return;
+				}
 
-			const event = z.parse(eventSchema, devalue.parse(updateString));
-			if ('playerId' in event && event.playerId === data.user.id) {
-				console.log('Skipping self event: ', event);
-				return;
-			}
+				const reader = response.body.getReader();
+				let total = 0;
 
-			console.log('Received event: ', event);
-			if (browser) {
-				await invalidateAll();
-			}
-		});
-
-	onDestroy(() => unsubscribe());
+				const decoder = new TextDecoder();
+				while (true) {
+					const { done, value } = await reader.read();
+					await invalidateAll();
+					if (done) return total;
+					total += value.length;
+					console.log(devalue.parse(decoder.decode(value)));
+					// Do something with each chunk
+					// Here we just accumulate the size of the response.
+					total += value.length;
+				}
+			})
+			.catch((err) => console.warn('Error while fetching promise', err));
+	});
 </script>
 
 <main class="mx-auto flex h-full max-w-screen min-w-sm flex-col px-4 py-8">
@@ -67,7 +67,6 @@
 			class="flex h-full flex-col"
 			method="post"
 			action="?/submit"
-			bind:this={formElem}
 			use:enhance={() => {
 				return async ({ update }) => {
 					await update({ invalidateAll: false, reset: false });
@@ -79,11 +78,12 @@
 				value={data.answer?.value ?? 0.5}
 				locked={allAnswered || data.game.finished}
 				onpress={() => unsubmitButton?.click()}
-				onrelease={() => formElem?.submit()}
+				onrelease={() => submitButton?.click()}
 				name="value"
 			/>
 			<div class="ml-auto w-[70%] text-right text-balance">{data.game.activeQuestion.answerB}</div>
 			<button class="hidden" formaction="?/unsubmit" bind:this={unsubmitButton}>unsumbut</button>
+			<button class="hidden" formaction="?/submit" bind:this={submitButton}>unsumbut</button>
 
 			<div class="flex-1"></div>
 		</form>
