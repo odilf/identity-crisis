@@ -8,14 +8,12 @@
 	import * as z from 'zod/mini';
 	import * as devalue from 'devalue';
 	import { invalidateAll } from '$app/navigation';
-	import { onDestroy, onMount } from 'svelte';
-	import { browser } from '$app/environment';
-	import { eventSchema } from './event';
+	import { onMount } from 'svelte';
 	import { areAllAnswered, getActiveAnswers, getMonarch } from './game';
 	import Button from '$lib/components/Button.svelte';
+	import { eventSchema } from './event';
 
 	let { data }: PageProps = $props();
-	// let formElem: HTMLFormElement | null = $state(null);
 	let submitButton: HTMLButtonElement | null = $state(null);
 	let unsubmitButton: HTMLButtonElement | null = $state(null);
 
@@ -27,22 +25,34 @@
 				}
 
 				const reader = response.body.getReader();
-				let total = 0;
-
 				const decoder = new TextDecoder();
+
 				while (true) {
 					const { done, value } = await reader.read();
+
+					const string = decoder.decode(value);
+					const object = devalue.parse(string);
+					const { success, data: event, error } = z.safeParse(eventSchema, object);
+
+					if (!success) {
+						console.warn(error);
+					}
+
+					console.log({ event });
 					await invalidateAll();
-					if (done) return total;
-					total += value.length;
-					console.log(devalue.parse(decoder.decode(value)));
-					// Do something with each chunk
-					// Here we just accumulate the size of the response.
-					total += value.length;
+
+					if (done) {
+						return;
+					}
 				}
 			})
 			.catch((err) => console.warn('Error while fetching promise', err));
 	});
+
+	// From https://stackoverflow.com/questions/73002812/regex-accurately-match-bold-and-italics-items-from-the-input
+	function mdToHtml(md: string) {
+		return md.replace(/\*\*(.+?)\*\*(?!\*)/g, '<b>$1</b>').replace(/\*([^*><]+)\*/g, '<i>$1</i>');
+	}
 </script>
 
 <main class="mx-auto flex h-full max-w-screen min-w-sm flex-col px-4 py-8">
@@ -73,7 +83,9 @@
 				};
 			}}
 		>
-			<div class="mr-auto w-[70%] text-left text-balance">{data.game.activeQuestion.answerA}</div>
+			<div class="mr-auto w-[70%] text-left text-balance">
+				{@html mdToHtml(data.game.activeQuestion.answerA)}
+			</div>
 			<Slider
 				value={data.answer?.value ?? 0.5}
 				locked={allAnswered || data.game.finished}
@@ -81,7 +93,9 @@
 				onrelease={() => submitButton?.click()}
 				name="value"
 			/>
-			<div class="ml-auto w-[70%] text-right text-balance">{data.game.activeQuestion.answerB}</div>
+			<div class="ml-auto w-[70%] text-right text-balance">
+				{@html mdToHtml(data.game.activeQuestion.answerB)}
+			</div>
 			<button class="hidden" formaction="?/unsubmit" bind:this={unsubmitButton}>unsumbut</button>
 			<button class="hidden" formaction="?/submit" bind:this={submitButton}>unsumbut</button>
 

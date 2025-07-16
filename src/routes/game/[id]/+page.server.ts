@@ -65,7 +65,7 @@ export const load: PageServerLoad = async ({ params }) => {
 	return {
 		game,
 		user,
-		answer,
+		answer
 	};
 };
 
