@@ -63,7 +63,11 @@ export const game = sqliteTable('game', {
 	turn: integer('turn').default(sql`null`),
 	activeQuestionId: integer('active_question_id')
 		.default(sql`null`)
-		.references(() => question.id, { onDelete: 'set default' })
+		.references(() => question.id, { onDelete: 'set default' }),
+	finished: integer('finished', { mode: 'boolean' })
+		.notNull()
+		.default(sql`false`),
+	options: text('options', { mode: 'json' }).notNull().default({})
 });
 
 export const gameRelations = relations(game, ({ one, many }) => ({
@@ -84,7 +88,7 @@ export const gamePlayers = sqliteTable(
 	{
 		gameId: text('game_id')
 			.notNull()
-			.references(() => game.id),
+			.references(() => game.id, { onDelete: 'cascade' }),
 		playerId: text('player_id')
 			.notNull()
 			.references(() => user.id),

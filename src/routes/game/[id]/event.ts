@@ -6,6 +6,10 @@ export const eventSchema = z.union([
 		playerId: z.string()
 	}),
 	z.object({
+		event: z.literal('playerLeave'),
+		playerId: z.string()
+	}),
+	z.object({
 		event: z.literal('start')
 	}),
 	z.object({
@@ -14,7 +18,10 @@ export const eventSchema = z.union([
 	}),
 	z.object({
 		event: z.literal('continue')
-	})
+	}),
+	z.object({
+		event: z.literal('finish')
+	}),
 ]);
 
 export type Event = z.infer<typeof eventSchema>;

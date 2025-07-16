@@ -13,6 +13,7 @@
 	import { browser } from '$app/environment';
 	import { eventSchema } from './event';
 	import { areAllAnswered, getActiveAnswers, getMonarch } from './game';
+	import Button from '$lib/components/Button.svelte';
 
 	let { data }: PageProps = $props();
 	let formElem: HTMLFormElement | null = $state(null);
@@ -53,10 +54,10 @@
 		{@const allAnswered = areAllAnswered(data.game)}
 
 		<h1 class="mb-8 flex justify-between gap-4 text-3xl font-light">
-			Monarch is {monarch.id === data.user.id ? 'you' : monarch.username}
+			Monarch {data.game.finished ? 'was' : 'is'} {monarch.id === data.user.id ? 'you' : monarch.username}
 			<p class="faint mb-4 text-lg font-light">Question {data.game.turn}</p>
 		</h1>
-		<h2 class="bg-primary mb-4 w-full py-4 text-center text-2xl text-base font-bold">
+		<h2 class="bg-base2 mb-4 w-full py-4 text-center text-balance text-2xl font-bold">
 			{data.game.activeQuestion.question}
 		</h2>
 
@@ -87,26 +88,45 @@
 		{#if allAnswered}
 			{@const activeAnswers = getActiveAnswers(data.game)}
 			{@const { overall } = calcSimilarities(unwrap(activeAnswers.monarch), activeAnswers.rest)}
-			<h2 class="text-2xl text-center">Overall similarity score: <span class="font-bold text-5xl">{format(overall)}</span></h2>
-			<h3>Monarch's ({data.game.players.find((player) => player.playerId === unwrap(activeAnswers.monarch).playerId)?.player.username}) answer</h3>
+			<h2 class="text-center text-2xl">
+				Overall similarity score: <br /> <span class="text-8xl font-bold">{format(overall)}</span>
+			</h2>
+			<h3>
+				Monarch's ({data.game.players.find(
+					(player) => player.player.id === unwrap(activeAnswers.monarch).playerId
+				)?.player.username}) answer
+			</h3>
 			<div>
 				<Slider value={unwrap(activeAnswers.monarch).value} locked={true} />
 			</div>
-			<h3 class="font-bold text-xl">Other answers</h3>
+			<h3 class="text-xl font-bold">Other answers</h3>
 			<ul>
 				{#each activeAnswers.rest as answer}
 					<li>
 						<div>
-							{data.game.players.find((player) => player.playerId === answer.playerId)?.player
-							.username}'s answer
-							({format(calcSimilarity(answer, unwrap(activeAnswers.monarch)))} match)
+							{data.game.players.find((player) => player.player.id === answer.playerId)?.player
+								.username}'s answer ({format(calcSimilarity(answer, unwrap(activeAnswers.monarch)))}
+							match)
 						</div>
 						<Slider value={answer.value} locked={true} />
 					</li>
 				{/each}
 			</ul>
-			<form class="w-full" method="post" action="?/continue">
-				<button class="bg-primary w-full rounded px-[1em] py-[0.3em] text-base"> Continue </button>
+
+			{#if !data.game.finished}
+				<form class="w-full" method="post" action="?/continue">
+					<button class="bg-primary w-full rounded px-[1em] py-[0.3em] text-base"> Continue </button>
+				</form>
+			{/if}
+		{/if}
+
+		{#if !data.game.finished}
+			<form use:enhance action="?/leave" method="post">
+				<Button
+					class="mt-4 flex w-1/2 cursor-pointer gap-2 rounded bg-red-300 px-[1em] py-4 text-base transition hover:bg-red-600"
+				>
+					<span class="w-full text-center"> Leave game </span>
+				</Button>
 			</form>
 		{/if}
 	{/if}

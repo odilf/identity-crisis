@@ -9,12 +9,17 @@ import { emit } from './+server';
 export const load: PageServerLoad = async ({ params }) => {
 	const user = requireLoginInsideLoad();
 	let game = await db.query.game.findFirst({
-		where: (game, { eq }) => eq(game.id, params.id),
+		where: (game, { eq, and }) => eq(game.id, params.id),
 		with: {
 			players: {
 				with: {
-					player: true
-				}
+					player: true,
+				},
+				columns: {
+					index: true,
+					points: true,
+				},
+				orderBy: (players, { asc }) => asc(players.index),
 			},
 			host: true,
 			activeQuestion: true,
@@ -27,7 +32,7 @@ export const load: PageServerLoad = async ({ params }) => {
 		throw redirect(302, '/game');
 	}
 
-	const inGame = game.players.some(({ playerId }) => playerId === user.id);
+	const inGame = game.players.some(({ player }) => player.id === user.id);
 	if (game.activeQuestion !== null && !inGame) {
 		// Started game that isn't the user's
 		throw redirect(302, '/game');
@@ -41,6 +46,7 @@ export const load: PageServerLoad = async ({ params }) => {
 			index: game.players.length
 		});
 		emit(params.id, { event: 'playerConnected', playerId: user.id });
+		game.players.push({ player: user, index: game.players.length, points: 0 })
 	}
 
 	// Get answer, if it exists
@@ -78,20 +84,58 @@ async function selectQuestion(
 			turn,
 			activeQuestionId: selected.id
 		})
-		.where(eq(schema.game.id, gameId));
+		.where(and(eq(schema.game.id, gameId), eq(schema.game.finished, false)));
 }
 
 export const actions: Actions = {
 	start: async ({ params }) => {
+		const game = await db.query.game.findFirst({
+			where: (game, { eq, and }) => and(eq(game.id, params.id), eq(game.finished, false)),
+			with: {
+				players: true
+			}
+		});
+
+		if (game && game.players.length <= 1) {
+			return;
+		}
+
 		await selectQuestion(0, params.id);
 		emit(params.id, { event: 'start' });
+	},
+
+	leave: async ({ params }) => {
+		const user = requireLoginInsideLoad();
+		const game = await db.query.game.findFirst({
+			where: (game, { eq, and }) => and(eq(game.id, params.id), eq(game.finished, false)),
+			with: {
+				players: true
+			}
+		});
+
+		if (game === undefined) {
+			return;
+		}
+
+		if (game.activeQuestionId !== null) {
+			await db.update(schema.game).set({ finished: true });
+			emit(params.id, { event: 'finish' })
+		} else if (game.players.length <= 1) {
+			await db.delete(schema.game).where(eq(schema.game.id, params.id));
+			emit(params.id, { event: 'playerLeave', playerId: user.id })
+			throw redirect(302, "/game")
+		} else {
+			await db.delete(schema.gamePlayers).where(eq(schema.gamePlayers.playerId, user.id));
+			emit(params.id, { event: 'playerLeave', playerId: user.id })
+			throw redirect(302, "/game")
+		}
 	},
 
 	submit: async ({ params, request }) => {
 		const user = requireLoginInsideLoad();
 		const [game, data] = await Promise.all([
 			db.query.game.findFirst({
-				where: (table, { eq }) => eq(table.id, params.id),
+				where: (game, { eq, and }) => and(eq(game.id, params.id), eq(game.finished, false)),
 				with: {
 					answers: true,
 					players: true
@@ -144,7 +188,7 @@ export const actions: Actions = {
 		db.transaction(async (tx) => {
 			const game = unwrap(
 				await tx.query.game.findFirst({
-					where: eq(schema.game.id, params.id),
+					where: (game, { eq, and }) => and(eq(game.id, params.id), eq(game.finished, false)),
 					with: {
 						players: true,
 						answers: true
@@ -172,7 +216,7 @@ export const actions: Actions = {
 	continue: async ({ params }) => {
 		const game = unwrap(
 			await db.query.game.findFirst({
-				where: eq(schema.game.id, params.id),
+				where: (game, { eq, and }) => and(eq(game.id, params.id), eq(game.finished, false)),
 				with: {
 					answers: true,
 					players: true

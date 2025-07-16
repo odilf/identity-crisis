@@ -9,23 +9,23 @@
 
 <h1 class="mb-4 text-3xl font-bold">New game</h1>
 
-<div class="grid grid-cols-2">
+<div class="grid sm:grid-cols-2">
 	<div>
 		<p>Hosted by {game.host.username}</p>
 		<p class="faint mb-1">id: {game.id}</p>
-		<Button onclick={() => navigator.clipboard.writeText(page.url.toString())}>
+		<Button onclick={async () => await navigator.clipboard.writeText(page.url.toString())}>
 			<div>Copy link</div>
 			<img src="/copy-link.svg" alt="copy link" />
 		</Button>
+
+		<p class="faint mt-2">{page.url.toString()}</p>
 	</div>
 
 	<div>
 		<div class="text-2xl font-bold">Connected players</div>
 		<ol>
 			{#each game.players as player}
-				<li class="list-decimal">{player.player.username}</li>
-			{:else}
-				<p class="faint">No one is connected yet!</p>
+				<li class="ml-5 list-decimal">{player.player.username}</li>
 			{/each}
 		</ol>
 	</div>
@@ -42,3 +42,11 @@
 		</Button>
 	</form>
 {/if}
+
+<form use:enhance action="?/leave" method="post">
+	<Button
+		class="mt-4 flex w-1/2 cursor-pointer gap-2 rounded bg-red-300 px-[1em] py-4 text-base transition hover:bg-red-600"
+	>
+		<span class="w-full text-center"> Leave game </span>
+	</Button>
+</form>

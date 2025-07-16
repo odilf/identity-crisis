@@ -13,19 +13,19 @@ export function getAllActiveAnswers<A extends { index: number }>(game: {
 
 export function getActiveAnswers<
 	A extends { index: number; playerId: string },
-	P extends { playerId: string }
+	P extends { player: { id: string } }
 >(game: { answers: A[]; players: P[]; turn: number | null }) {
 	const allActiveAnswers = getAllActiveAnswers(game);
 	const monarch = getMonarch(game);
 	return {
-		monarch: allActiveAnswers.find((answer) => answer.playerId === monarch.playerId),
-		rest: allActiveAnswers.filter((answer) => answer.playerId !== monarch.playerId)
+		monarch: allActiveAnswers.find((answer) => answer.playerId === monarch.player.id),
+		rest: allActiveAnswers.filter((answer) => answer.playerId !== monarch.player.id)
 	};
 }
 
 export function areAllAnswered<
 	A extends { index: number; playerId: string },
-	P extends { playerId: string }
+	P extends { player: { id: string } }
 >(game: { answers: A[]; players: P[]; turn: number | null }) {
 	const activeAnswers = getActiveAnswers(game);
 	return activeAnswers.rest.length + (activeAnswers.monarch ? 1 : 0) >= game.players.length;

@@ -10,7 +10,10 @@
 		{@render children()}
 	</a>
 {:else}
-	<button class="bg-primary flex gap-2 rounded px-[1em] py-[0.3em] text-base" {...restProps}>
+	<button
+		class="bg-primary hover:bg-secondary flex gap-2 rounded px-[1em] py-[0.3em] text-base"
+		{...restProps}
+	>
 		{@render children()}
 	</button>
 {/if}

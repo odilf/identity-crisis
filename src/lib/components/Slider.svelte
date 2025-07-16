@@ -5,14 +5,14 @@
 		hidden = false,
 		onpress,
 		onrelease,
-		class: className,
+		class: className
 	}: {
 		value?: number;
 		locked?: boolean;
 		hidden?: boolean;
 		onpress?: () => void;
 		onrelease?: () => void;
-		class?: string,
+		class?: string;
 	} = $props();
 </script>
 

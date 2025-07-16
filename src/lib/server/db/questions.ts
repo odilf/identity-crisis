@@ -132,35 +132,39 @@ export async function addTomlToDb(toml: string) {
 	// NOTE: A bit of a bodge to fix the fact that `createSelectSchema` from drizzle
 	// doesn't actually make field optional, just nullable...
 	const nullableQuestionSchema = z.preprocess((question) => {
-		return typeof question === 'object' ? {
-			hotness: null,
-			knowledge: null,
-			losesAllPointsOption: null,
-			beheadingOption: null,
-			plus1PointOption: null,
-			invincibilityOption: null,
-			jailOption: null,
-			genocideRouteOption: null,
-			followUpQuestionId: null,
-			followUpConditionOption: null,
-			invicibilityOrBeheadingOption: null,
-			...question
-		} : question;
+		return typeof question === 'object'
+			? {
+					hotness: null,
+					knowledge: null,
+					losesAllPointsOption: null,
+					beheadingOption: null,
+					plus1PointOption: null,
+					invincibilityOption: null,
+					jailOption: null,
+					genocideRouteOption: null,
+					followUpQuestionId: null,
+					followUpConditionOption: null,
+					invicibilityOrBeheadingOption: null,
+					...question
+				}
+			: question;
 	}, questionSchema);
 
 	const objSchema = z.object({ questions: z.array(nullableQuestionSchema) });
 	const data = objSchema.parse(smol_toml.parse(toml));
 
-	await db.transaction(async tx => {
+	await db.transaction(async (tx) => {
 		for (const question of data.questions) {
 			await tx.delete(schema.question).where(eq(schema.question.id, question.id));
 			console.log(question);
-			console.log(await tx.query.question.findMany({
-				where: eq(schema.question.id, question.id),
-			}));
+			console.log(
+				await tx.query.question.findMany({
+					where: eq(schema.question.id, question.id)
+				})
+			);
 			await tx.insert(schema.question).values(question);
 		}
-	})
+	});
 }
 
 export async function tsvToToml(tsv: string) {

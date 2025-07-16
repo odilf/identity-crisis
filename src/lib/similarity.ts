@@ -1,5 +1,5 @@
 export function calcSimilarity(monarch: { value: number }, other: { value: number }): number {
-	return 1 - Math.abs(monarch.value - other.value);
+	return (1 - Math.abs(monarch.value - other.value)) ** 3;
 }
 export function calcSimilarities(
 	monarchAnswer: { value: number },
