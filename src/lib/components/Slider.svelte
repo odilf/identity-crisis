@@ -253,6 +253,7 @@
 		<div class="track" bind:this={container}>
 			<div class="track--highlighted" bind:this={progressBar}></div>
 			<button
+				{disabled}
 				class="thumb"
 				class:thumb--holding={holding}
 				bind:this={thumb}

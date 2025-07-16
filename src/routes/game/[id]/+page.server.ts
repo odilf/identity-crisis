@@ -4,7 +4,7 @@ import { redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { and, eq } from 'drizzle-orm';
 import { unwrap } from '$lib/utils';
-import { emit } from './+server';
+import { _emit } from './+server';
 
 export const load: PageServerLoad = async ({ params }) => {
 	const user = requireLoginInsideLoad();
@@ -45,7 +45,7 @@ export const load: PageServerLoad = async ({ params }) => {
 			playerId: user.id,
 			index: game.players.length
 		});
-		emit(params.id, { event: 'playerConnected', playerId: user.id });
+		_emit(params.id, { event: 'playerConnected', playerId: user.id });
 		game.players.push({ player: user, index: game.players.length, points: 0 });
 	}
 
@@ -101,7 +101,7 @@ export const actions: Actions = {
 		}
 
 		await selectQuestion(0, params.id);
-		emit(params.id, { event: 'start' });
+		_emit(params.id, { event: 'start' });
 	},
 
 	leave: async ({ params }) => {
@@ -119,14 +119,14 @@ export const actions: Actions = {
 
 		if (game.activeQuestionId !== null) {
 			await db.update(schema.game).set({ finished: true });
-			emit(params.id, { event: 'finish' });
+			_emit(params.id, { event: 'finish' });
 		} else if (game.players.length <= 1) {
 			await db.delete(schema.game).where(eq(schema.game.id, params.id));
-			emit(params.id, { event: 'playerLeave', playerId: user.id });
+			_emit(params.id, { event: 'playerLeave', playerId: user.id });
 			throw redirect(302, '/game');
 		} else {
 			await db.delete(schema.gamePlayers).where(eq(schema.gamePlayers.playerId, user.id));
-			emit(params.id, { event: 'playerLeave', playerId: user.id });
+			_emit(params.id, { event: 'playerLeave', playerId: user.id });
 			throw redirect(302, '/game');
 		}
 	},
@@ -150,7 +150,7 @@ export const actions: Actions = {
 
 		const value = parseFloat(data.get('value')?.toString() ?? '');
 		if (isNaN(value)) {
-			throw new Error("Slider value was NaN!");
+			throw new Error('Slider value was NaN!');
 		}
 
 		await db.transaction(async (tx) => {
@@ -160,7 +160,7 @@ export const actions: Actions = {
 					gameId: game.id,
 					playerId: user.id,
 					value,
-					index: unwrap(game.turn, "Game turn was undefined in insert answer?")
+					index: unwrap(game.turn, 'Game turn was undefined in insert answer?')
 				})
 				.onConflictDoNothing();
 
@@ -181,7 +181,7 @@ export const actions: Actions = {
 				game.answers.filter(({ index }) => index === game.turn).length + 1 >=
 				game.players.length
 			) {
-				emit(params.id, { event: 'allSubmitted', lastPlayerId: user.id });
+				_emit(params.id, { event: 'allSubmitted', lastPlayerId: user.id });
 			}
 		});
 	},
@@ -232,6 +232,6 @@ export const actions: Actions = {
 		}
 
 		await selectQuestion(unwrap(game.turn) + 1, params.id);
-		emit(params.id, { event: 'continue' });
+		_emit(params.id, { event: 'continue' });
 	}
 };
