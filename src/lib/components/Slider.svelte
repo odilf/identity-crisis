@@ -14,7 +14,8 @@
 		locked = false,
 		onchange = () => null,
 		onrelease = () => null,
-		onpress = () => null
+		onpress = () => null,
+		tooltip
 	}: {
 		min?: number;
 		max?: number;
@@ -26,20 +27,17 @@
 		onchange?: ({ value }: { value: number }) => void;
 		onrelease?: () => void;
 		onpress?: () => void;
+		tooltip?: (value: number) => unknown;
 	} = $props();
 
 	let disabled = $derived(locked || hidden);
 
-	// Node Bindings
-	let container: HTMLDivElement;
+	let containerWidth: number | null = $state(null);
 	let thumb: HTMLButtonElement;
-	let progressBar: HTMLDivElement;
 	let element: HTMLDivElement | null = $state(null);
 
-	// Internal State
 	let elementX = $derived.by(() => element?.getBoundingClientRect().left);
-	let currentThumb: HTMLButtonElement | null = null;
-	let holding = $derived(Boolean(currentThumb));
+	let holding = $state(false);
 	let thumbHover = $state(false);
 	let keydownAcceleration = 0;
 	let accelerationTimer: NodeJS.Timeout | null = null;
@@ -60,49 +58,57 @@
 		elementX = element?.getBoundingClientRect().left;
 	}
 
-	// Allows both bind:value and on:change for parent value retrieval
+	// Allows both `bind:value` and `onchange` for parent value retrieval
 	function setValue(newValue: number) {
-		value = newValue;
+		value = Math.max(min, Math.min(newValue, max));
 		onchange({ value });
 	}
 
 	type MouseOrTouchEvent =
 		| (MouseEvent & { type: 'mousedown' | 'mouseup' | 'mousemove' })
-		| (TouchEvent & { type: 'touchstart' | 'touchmove' });
+		| (TouchEvent & { type: 'touchstart' | 'touchend' | 'touchmove' | 'touchcancel' });
 	const isTouchEvent = (
 		e: MouseOrTouchEvent
-	): e is TouchEvent & { type: 'touchstart' | 'touchmove' } => {
-		return e.type === 'touchmove' || e.type === 'touchstart';
+	): e is TouchEvent & { type: 'touchstart' | 'touchmove' | 'touchend' | 'touchcancel' } => {
+		return (
+			e.type === 'touchmove' ||
+			e.type === 'touchstart' ||
+			e.type === 'touchend' ||
+			e.type === 'touchcancel'
+		);
 	};
 
 	function onTrackEvent(e: MouseOrTouchEvent) {
-		// Update value immediately before beginning drag
+		holding = true;
 		updateValueOnEvent(e);
 		onDragStart(e);
+		onpress();
 	}
 
 	function onDragStart(e: MouseOrTouchEvent) {
-		onpress();
-
 		// If mouse event add a pointer events shield
 		if (e.type === 'mousedown') {
 			document.body.append(mouseEventShield);
 		}
-
-		// TODO: What does this line do?
-		currentThumb = thumb;
 	}
 
 	function onDragEnd(e: MouseOrTouchEvent) {
-		onrelease();
+		if (holding) {
+			onrelease();
+		}
 
 		// If using mouse - remove pointer event shield
 		if (e.type === 'mouseup') {
-			if (document.body.contains(mouseEventShield)) document.body.removeChild(mouseEventShield);
+			if (document.body.contains(mouseEventShield)) {
+				document.body.removeChild(mouseEventShield);
+			}
 			// Needed to check whether thumb and mouse overlap after shield removed
-			if (isMouseInElement(e, thumb)) thumbHover = true;
+			if (isMouseInElement(e, thumb)) {
+				thumbHover = true;
+			}
 		}
-		currentThumb = null;
+
+		holding = false;
 	}
 
 	// Check if mouse event cords overlay with an element's area
@@ -118,14 +124,16 @@
 	function onKeyPress(e: KeyboardEvent) {
 		// Max out at +/- 10 to value per event (50 events / 5)
 		// 100 below is to increase the amount of events required to reach max velocity
-		if (keydownAcceleration < 50) keydownAcceleration++;
-		let throttled = Math.ceil(keydownAcceleration / 5);
+		if (keydownAcceleration < 100) {
+			keydownAcceleration += 5;
+		}
+		let throttled = Math.ceil(keydownAcceleration);
 
 		if (e.key === 'ArrowUp' || e.key === 'ArrowRight') {
-			setValue(Math.min(value + throttled * step, max));
+			setValue(value + throttled * step);
 		}
 		if (e.key === 'ArrowDown' || e.key === 'ArrowLeft') {
-			setValue(Math.max(value - throttled * step, min));
+			setValue(value - throttled * step);
 		}
 
 		// Reset acceleration after 100ms of no events
@@ -134,23 +142,16 @@
 	}
 
 	function calculateNewValue(clientX: number) {
-		// Find distance between cursor and element's left cord (20px / 2 = 10px) - Center of thumb
-		let delta = clientX - (unwrap(elementX) + 10);
-
-		// Use width of the container minus (5px * 2 sides) offset for percent calc
-		let percent = delta / (container.clientWidth - 10);
-
-		// Clamp
-		percent = Math.max(0, Math.min(percent, 1));
-
-		// Limit value min -> max
+		let percent = (clientX - unwrap(elementX)) / unwrap(containerWidth);
 		setValue(percent * (max - min) + min);
 	}
 
 	// Handles both dragging of touch/mouse as well as simple one-off click/touches
 	function updateValueOnEvent(e: MouseOrTouchEvent) {
 		// touchstart && mousedown are one-off updates, otherwise expect a currentPointer node
-		if (!currentThumb && e.type !== 'touchstart' && e.type !== 'mousedown') return false;
+		if (!holding) {
+			return false;
+		}
 
 		if (e.stopPropagation) e.stopPropagation();
 		if (e.preventDefault) e.preventDefault();
@@ -161,20 +162,7 @@
 		calculateNewValue(clientX);
 	}
 
-	// Update progressbar and thumb styles to represent value
-	$effect(() => {
-		if (progressBar && thumb) {
-			// Limit value min -> max
-			value = Math.max(min, Math.min(value, max));
-
-			let percent = (value - min) / (max - min);
-			let offsetLeft = (container.clientWidth - 10) * percent + 5;
-
-			// Update thumb position + active range track width
-			thumb.style.left = `${offsetLeft}px`;
-			progressBar.style.width = `${offsetLeft}px`;
-		}
-	});
+	let percent = $derived((value - min) / (max - min));
 
 	/* `validateTouchEventHandler`
 	 * Shortened because it is very commonly used.
@@ -185,8 +173,13 @@
 		}
 
 		const validateTouchEvent = (e: TouchEvent): MouseOrTouchEvent => {
-			const typeIsTouch = (type: string): type is 'touchstart' | 'touchmove' =>
-				type === 'touchstart' || type === 'touchmove';
+			const typeIsTouch = (
+				type: string
+			): type is 'touchstart' | 'touchmove' | 'touchend' | 'touchcancel' =>
+				type === 'touchstart' ||
+				type === 'touchmove' ||
+				type === 'touchend' ||
+				type === 'touchcancel';
 			if (typeIsTouch(e.type)) {
 				return e as TouchEvent & { type: typeof e.type };
 			}
@@ -228,7 +221,18 @@
 	onresize={resizeWindow}
 />
 
-<div class="range">
+<div
+	id="range"
+	class="relative px-2 py-4 {hidden && 'grayscale'}"
+	onmousedown={vmeh(onTrackEvent)}
+	ontouchstart={vteh(onTrackEvent)}
+	role="slider"
+	aria-valuemin={min}
+	aria-valuemax={max}
+	aria-valuenow={value}
+	onkeydown={onKeyPress}
+	tabindex={0}
+>
 	<input
 		type="range"
 		{value}
@@ -239,24 +243,20 @@
 		{name}
 		disabled={hidden || locked}
 	/>
-	<div
-		class="wrapper"
-		tabindex={0}
-		onkeydown={onKeyPress}
-		bind:this={element}
-		role="slider"
-		aria-valuemin={min}
-		aria-valuemax={max}
-		aria-valuenow={value}
-		onmousedown={vmeh(onTrackEvent)}
-		ontouchstart={vteh(onTrackEvent)}
-	>
-		<div class="track" bind:this={container}>
-			<div class="track--highlighted" bind:this={progressBar}></div>
+	<div class="relative" bind:this={element}>
+		<div id="track" class="bg-secondary/50 h-2 rounded" bind:clientWidth={containerWidth}>
+			<div
+				id="track-highlighted"
+				class="bg-tertiary h-2 rounded"
+				style:width="{percent * 100}%"
+			></div>
 			<button
 				{disabled}
-				class="thumb"
-				class:thumb--holding={holding}
+				id="thumb"
+				class="{holding
+					? 'bg-secondary'
+					: 'bg-primary'} absolute top-1/2 flex h-8 w-3 -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center justify-center rounded-xl shadow transition select-none"
+				style:left="{percent * 100}%"
 				bind:this={thumb}
 				ontouchstart={vteh(onDragStart)}
 				onmousedown={vmeh(onDragStart)}
@@ -265,9 +265,9 @@
 				onmouseout={() => (thumbHover = false)}
 				onblur={() => (thumbHover = false)}
 			>
-				{#if holding || thumbHover}
+				{#if tooltip && (holding || thumbHover)}
 					<div class="tooltip" in:fly={{ y: 7, duration: 200 }} out:fade={{ duration: 100 }}>
-						{value}
+						{tooltip(value)}
 					</div>
 				{/if}
 			</button>
@@ -285,66 +285,6 @@
 		background-color: rgba(255, 0, 0, 0);
 		z-index: 10000;
 		cursor: grabbing;
-	}
-
-	.range {
-		position: relative;
-	}
-
-	.wrapper {
-		min-width: 100%;
-		position: relative;
-		padding: 0.5rem;
-		box-sizing: border-box;
-		outline: none;
-	}
-
-	.wrapper:focus-visible > .track {
-		box-shadow:
-			0 0 0 2px white,
-			0 0 0 3px var(--track-focus, #6185ff);
-	}
-
-	.track {
-		height: 6px;
-		background-color: var(--track-bgcolor, #d0d0d0);
-		border-radius: 999px;
-	}
-
-	.track--highlighted {
-		background-color: var(--track-highlight-bgcolor, #6185ff);
-		background: var(--track-highlight-bg, linear-gradient(90deg, #6185ff, #9c65ff));
-		width: 0;
-		height: 6px;
-		position: absolute;
-		border-radius: 999px;
-	}
-
-	.thumb {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		position: absolute;
-		width: 20px;
-		height: 20px;
-		background-color: var(--thumb-bgcolor, white);
-		cursor: pointer;
-		border-radius: 999px;
-		margin-top: -8px;
-		transition: box-shadow 100ms;
-		user-select: none;
-		box-shadow: var(
-			--thumb-boxshadow,
-			0 1px 1px 0 rgba(0, 0, 0, 0.14),
-			0 0px 2px 1px rgba(0, 0, 0, 0.2)
-		);
-	}
-
-	.thumb--holding {
-		box-shadow:
-			0 1px 1px 0 rgba(0, 0, 0, 0.14),
-			0 1px 2px 1px rgba(0, 0, 0, 0.2),
-			0 0 0 6px var(--thumb-holding-outline, rgba(113, 119, 250, 0.3));
 	}
 
 	.tooltip {
