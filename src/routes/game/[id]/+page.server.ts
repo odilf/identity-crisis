@@ -23,6 +23,9 @@ export const load: PageServerLoad = async ({ params }) => {
 			},
 			host: true,
 			activeQuestion: true,
+
+			// TODO: It is technically wrong to return the actual answers to the frontend...
+			// We should just report whether they're all answered or not.
 			answers: true
 		}
 	});
@@ -59,7 +62,7 @@ export const load: PageServerLoad = async ({ params }) => {
 					eq(table.playerId, user.id),
 					eq(table.index, unwrap(game.turn))
 				)
-		});
+		}) ?? null;
 	}
 
 	return {

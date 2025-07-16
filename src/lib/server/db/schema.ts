@@ -151,6 +151,8 @@ export const rating = sqliteTable('rating', {
 
 export type Session = typeof session.$inferSelect;
 export type User = typeof user.$inferSelect;
+export type Game = typeof game.$inferSelect;
 export type Question = typeof question.$inferSelect;
+export type Answer = typeof answer.$inferSelect;
 
 export const questionSchema = createSelectSchema(question);
