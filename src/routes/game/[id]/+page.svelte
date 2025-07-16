@@ -45,7 +45,7 @@
 	});
 </script>
 
-<main class="mx-auto flex h-full max-w-screen min-w-sm flex-col px-4 py-8">
+<main class="mx-auto flex h-full max-w-xl min-w-sm flex-col px-4 py-8">
 	{#if data.game.activeQuestion !== null}
 		<Game
 			game={{ ...data.game, activeQuestion: data.game.activeQuestion }}
