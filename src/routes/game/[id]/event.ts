@@ -21,7 +21,7 @@ export const eventSchema = z.union([
 	}),
 	z.object({
 		event: z.literal('finish')
-	}),
+	})
 ]);
 
 export type Event = z.infer<typeof eventSchema>;

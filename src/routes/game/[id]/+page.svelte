@@ -18,18 +18,19 @@
 	let { data }: PageProps = $props();
 	let formElem: HTMLFormElement | null = $state(null);
 	let unsubmitButton: HTMLButtonElement | null = $state(null);
-	let value = $state(data.answer?.value ?? 0.5);
-	let ready = $state(false);
 
+	// TODO: This seems to be erroring...
+	// `Uncaught (in promise) TypeError: NetworkError when attempting to fetch resource.`
+	// I'm not sure why it is.
 	const unsubscribe = source(`/game/${data.game.id}`)
 		.select('update')
-		.subscribe(async (value) => {
+		.subscribe(async (updateString) => {
 			// I'm not sure why this happens...
-			if (value === '') {
+			if (updateString === '') {
 				return;
 			}
 
-			const event = z.parse(eventSchema, devalue.parse(value));
+			const event = z.parse(eventSchema, devalue.parse(updateString));
 			if ('playerId' in event && event.playerId === data.user.id) {
 				console.log('Skipping self event: ', event);
 				return;
@@ -54,10 +55,11 @@
 		{@const allAnswered = areAllAnswered(data.game)}
 
 		<h1 class="mb-8 flex justify-between gap-4 text-3xl font-light">
-			Monarch {data.game.finished ? 'was' : 'is'} {monarch.id === data.user.id ? 'you' : monarch.username}
+			Monarch {data.game.finished ? 'was' : 'is'}
+			{monarch.id === data.user.id ? 'you' : monarch.username}
 			<p class="faint mb-4 text-lg font-light">Question {data.game.turn}</p>
 		</h1>
-		<h2 class="bg-base2 mb-4 w-full py-4 text-center text-balance text-2xl font-bold">
+		<h2 class="bg-base2 mb-4 w-full py-4 text-center text-2xl font-bold text-balance">
 			{data.game.activeQuestion.question}
 		</h2>
 
@@ -72,14 +74,15 @@
 				};
 			}}
 		>
-			<div class="mr-auto w-[70%] text-left">{data.game.activeQuestion.answerA}</div>
+			<div class="mr-auto w-[70%] text-left text-balance">{data.game.activeQuestion.answerA}</div>
 			<Slider
 				value={data.answer?.value ?? 0.5}
-				locked={allAnswered}
+				locked={allAnswered || data.game.finished}
 				onpress={() => unsubmitButton?.click()}
 				onrelease={() => formElem?.submit()}
+				name="value"
 			/>
-			<div class="ml-auto w-[70%] text-right">{data.game.activeQuestion.answerB}</div>
+			<div class="ml-auto w-[70%] text-right text-balance">{data.game.activeQuestion.answerB}</div>
 			<button class="hidden" formaction="?/unsubmit" bind:this={unsubmitButton}>unsumbut</button>
 
 			<div class="flex-1"></div>
@@ -97,7 +100,7 @@
 				)?.player.username}) answer
 			</h3>
 			<div>
-				<Slider value={unwrap(activeAnswers.monarch).value} locked={true} />
+				<Slider value={unwrap(activeAnswers.monarch).value} locked={true} name="monarch-value" />
 			</div>
 			<h3 class="text-xl font-bold">Other answers</h3>
 			<ul>
@@ -108,14 +111,16 @@
 								.username}'s answer ({format(calcSimilarity(answer, unwrap(activeAnswers.monarch)))}
 							match)
 						</div>
-						<Slider value={answer.value} locked={true} />
+						<Slider value={answer.value} locked={true} name="{answer.playerId}-value" />
 					</li>
 				{/each}
 			</ul>
 
 			{#if !data.game.finished}
 				<form class="w-full" method="post" action="?/continue">
-					<button class="bg-primary w-full rounded px-[1em] py-[0.3em] text-base"> Continue </button>
+					<button class="bg-primary w-full rounded px-[1em] py-[0.3em] text-base">
+						Continue
+					</button>
 				</form>
 			{/if}
 		{/if}

@@ -1,6 +1,6 @@
-export function unwrap<T>(value: T | null | undefined): T {
+export function unwrap<T>(value: T | null | undefined, msg?: string): T {
 	if (value === null || value === undefined) {
-		throw new Error('Value was null');
+		throw new Error(msg ?? 'Value was null');
 	}
 
 	return value;

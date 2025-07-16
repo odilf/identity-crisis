@@ -9,17 +9,17 @@ import { emit } from './+server';
 export const load: PageServerLoad = async ({ params }) => {
 	const user = requireLoginInsideLoad();
 	let game = await db.query.game.findFirst({
-		where: (game, { eq, and }) => eq(game.id, params.id),
+		where: (game, { eq }) => eq(game.id, params.id),
 		with: {
 			players: {
 				with: {
-					player: true,
+					player: true
 				},
 				columns: {
 					index: true,
-					points: true,
+					points: true
 				},
-				orderBy: (players, { asc }) => asc(players.index),
+				orderBy: (players, { asc }) => asc(players.index)
 			},
 			host: true,
 			activeQuestion: true,
@@ -46,7 +46,7 @@ export const load: PageServerLoad = async ({ params }) => {
 			index: game.players.length
 		});
 		emit(params.id, { event: 'playerConnected', playerId: user.id });
-		game.players.push({ player: user, index: game.players.length, points: 0 })
+		game.players.push({ player: user, index: game.players.length, points: 0 });
 	}
 
 	// Get answer, if it exists
@@ -119,15 +119,15 @@ export const actions: Actions = {
 
 		if (game.activeQuestionId !== null) {
 			await db.update(schema.game).set({ finished: true });
-			emit(params.id, { event: 'finish' })
+			emit(params.id, { event: 'finish' });
 		} else if (game.players.length <= 1) {
 			await db.delete(schema.game).where(eq(schema.game.id, params.id));
-			emit(params.id, { event: 'playerLeave', playerId: user.id })
-			throw redirect(302, "/game")
+			emit(params.id, { event: 'playerLeave', playerId: user.id });
+			throw redirect(302, '/game');
 		} else {
 			await db.delete(schema.gamePlayers).where(eq(schema.gamePlayers.playerId, user.id));
-			emit(params.id, { event: 'playerLeave', playerId: user.id })
-			throw redirect(302, "/game")
+			emit(params.id, { event: 'playerLeave', playerId: user.id });
+			throw redirect(302, '/game');
 		}
 	},
 
@@ -149,6 +149,9 @@ export const actions: Actions = {
 		}
 
 		const value = parseFloat(data.get('value')?.toString() ?? '');
+		if (isNaN(value)) {
+			throw new Error("Slider value was NaN!");
+		}
 
 		await db.transaction(async (tx) => {
 			await tx
@@ -157,7 +160,7 @@ export const actions: Actions = {
 					gameId: game.id,
 					playerId: user.id,
 					value,
-					index: unwrap(game.turn)
+					index: unwrap(game.turn, "Game turn was undefined in insert answer?")
 				})
 				.onConflictDoNothing();
 
