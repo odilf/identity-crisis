@@ -93,25 +93,25 @@
 			</li>
 		{/each}
 	</ul>
+{/if}
 
-	{#if !game.finished}
-		<div class="flex w-full gap-2">
-			<form use:enhance action="?/leave" method="post" class="h-full flex-1">
-				<button
-					class="w-full rounded bg-red-200 px-[1em] py-[0.3em] text-base transition hover:bg-red-300"
-				>
-					Leave game
-				</button>
-			</form>
+{#if !game.finished}
+	<div class="flex w-full gap-2">
+		<form use:enhance action="?/leave" method="post" class="h-full flex-1">
+			<button
+				class="w-full rounded bg-red-200 px-[1em] py-[0.3em] text-base transition hover:bg-red-300"
+			>
+				Leave game
+			</button>
+		</form>
 
+		{#if allAnswered}
 			<form class="h-full w-full flex-2" method="post" action="?/continue">
 				<button
 					class="bg-primary hover:bg-secondary w-full rounded px-[1em] py-[0.3em] text-base transition"
 					>Continue</button
 				>
 			</form>
-		</div>
-	{/if}
+		{/if}
+	</div>
 {/if}
-
-{#if !game.finished}{/if}
