@@ -9,7 +9,6 @@ const subscribers: Map<
 > = new Map();
 
 export function _emit<T extends Event>(gameId: string, data: T) {
-	console.log('emmiting event', { data });
 	subscribers.get(gameId)?.forEach((enque) => {
 		enque(stringify(data));
 	});

@@ -9,7 +9,7 @@
 <div class="flex h-full flex-col">
 	{#if page.url.pathname !== '/'}
 		<div
-			class="box-neon neon neon-secondary grid h-fit w-screen grid-cols-3 content-center outline"
+			class="box-neon-bottom-big neon neon-xl neon-secondary outline-glow-secondary-base grid h-fit w-screen grid-cols-3 content-center outline"
 		>
 			<div></div>
 			<a href="/" class="content-center text-center font-light"> who am i </a>

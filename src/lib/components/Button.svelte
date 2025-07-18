@@ -15,14 +15,14 @@
 	}
 
 	const style =
-		'hover:bg-primary/10 transition flex gap-2 rounded px-[1em] py-[0.3em] cursor-pointer neon neon-md box-neon color-base';
+		'hover:bg-glow-base/20 transition flex gap-2 rounded px-[1em] py-[0.3em] cursor-pointer neon neon-md box-neon color-base';
 </script>
 
 {#if props.href !== undefined}
 	<a
 		{...props}
 		href={props.href}
-		class={cn(style, props.class, props.style === 'danger' && 'neon-red')}
+		class={cn(style, props.class, props.style === 'danger' && 'neon-red hover:bg-red-300')}
 	>
 		{@render props.children?.()}
 	</a>

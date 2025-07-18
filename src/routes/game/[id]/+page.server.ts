@@ -5,6 +5,7 @@ import type { Actions, PageServerLoad } from './$types';
 import { and, eq } from 'drizzle-orm';
 import { unwrap } from '$lib/utils';
 import { _emit } from './+server';
+import { areAllAnswered } from './game';
 
 export const load: PageServerLoad = async ({ params }) => {
 	const user = requireLoginInsideLoad();
@@ -24,20 +25,22 @@ export const load: PageServerLoad = async ({ params }) => {
 			host: true,
 			activeQuestion: true,
 
-			// TODO: It is technically wrong to return the actual answers to the frontend...
-			// We should just report whether they're all answered or not.
-			answers: true
+			answers: {
+				with: {
+					player: true
+				},
+			}
 		}
 	});
 
+	// Game doesn't exist
 	if (game === undefined) {
-		// Game doesn't exist
 		throw redirect(302, '/game');
 	}
 
+	// Started game that isn't the user's
 	const inGame = game.players.some(({ player }) => player.id === user.id);
 	if (game.activeQuestion !== null && !inGame) {
-		// Started game that isn't the user's
 		throw redirect(302, '/game');
 	}
 
@@ -52,7 +55,7 @@ export const load: PageServerLoad = async ({ params }) => {
 		game.players.push({ player: user, index: game.players.length, points: 0 });
 	}
 
-	// Get answer, if it exists
+	// Get player's answer, if it exists
 	let answer = null;
 	if (game.activeQuestion !== null) {
 		answer = await db.query.answer.findFirst({
@@ -63,6 +66,11 @@ export const load: PageServerLoad = async ({ params }) => {
 					eq(table.index, unwrap(game.turn))
 				)
 		}) ?? null;
+	}
+
+	// Redact other answers, if not everyone has answered yet
+	if (!areAllAnswered(game)) {
+		game.answers.forEach(answer => answer.value = 0.0)
 	}
 
 	return {

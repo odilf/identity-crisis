@@ -15,7 +15,7 @@
 		onchange = () => null,
 		onrelease = () => null,
 		onpress = () => null,
-		tooltip
+		marks = []
 	}: {
 		min?: number;
 		max?: number;
@@ -27,8 +27,12 @@
 		onchange?: ({ value }: { value: number }) => void;
 		onrelease?: () => void;
 		onpress?: () => void;
-		tooltip?: (value: number) => unknown;
+		marks?: { value: number; label: string }[];
 	} = $props();
+
+	// let neon = $derived(!locked);
+	// TODO: Looks too bland disabled...
+	const neon = true;
 
 	let disabled = $derived(locked || hidden);
 
@@ -36,7 +40,7 @@
 	let thumb: HTMLButtonElement;
 	let element: HTMLDivElement | null = $state(null);
 
-	let elementX = $derived.by(() => element?.getBoundingClientRect().left);
+	let elementLeft = $derived.by(() => element?.getBoundingClientRect().left);
 	let holding = $state(false);
 	let thumbHover = $state(false);
 	let keydownAcceleration = 0;
@@ -55,7 +59,7 @@
 	});
 
 	function resizeWindow() {
-		elementX = element?.getBoundingClientRect().left;
+		elementLeft = element?.getBoundingClientRect().left;
 	}
 
 	// Allows both `bind:value` and `onchange` for parent value retrieval
@@ -142,7 +146,7 @@
 	}
 
 	function calculateNewValue(clientX: number) {
-		let percent = (clientX - unwrap(elementX)) / unwrap(containerWidth);
+		let percent = (clientX - unwrap(elementLeft)) / unwrap(containerWidth);
 		setValue(percent * (max - min) + min);
 	}
 
@@ -243,36 +247,53 @@
 		{name}
 		disabled={hidden || locked}
 	/>
-	<div class="relative" bind:this={element}>
-		<div id="track" class="bg-secondary/50 h-2 rounded" bind:clientWidth={containerWidth}>
+	<div class="relative flex" bind:this={element} bind:clientWidth={containerWidth}>
+		<div
+			id="track-highlighted"
+			class={[
+				neon && 'neon neon-secondary neon-lg box-neon',
+				'bg-glow-secondary-base/90 h-2 rounded-l-full'
+			]}
+			style:width="{percent * 100}%"
+		></div>
+		<button
+			{disabled}
+			id="thumb"
+			class={[
+				holding ? 'bg-glow-base/50' : 'bg-white-base',
+				'absolute top-1/2 flex h-8 w-3 -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center justify-center rounded-xl shadow transition select-none',
+				neon && 'neon neon-lg box-neon neon-secondary'
+			]}
+			style:left="{percent * 100}%"
+			bind:this={thumb}
+			ontouchstart={vteh(onDragStart)}
+			onmousedown={vmeh(onDragStart)}
+			onmouseover={() => (thumbHover = true)}
+			onfocus={() => (thumbHover = true)}
+			onmouseout={() => (thumbHover = false)}
+			onblur={() => (thumbHover = false)}
+			aria-label="range-thumb"
+		>
+		</button>
+		<div
+			id="track"
+			class={[neon && 'neon neon-md box-neon', 'bg-glow-base/20 h-2 w-full rounded-r-full']}
+			style:width="{(1 - percent) * 100}%"
+		></div>
+		{#each marks as { value: markValue, label }}
 			<div
-				id="track-highlighted"
-				class="bg-tertiary h-2 rounded"
-				style:width="{percent * 100}%"
-			></div>
-			<button
-				{disabled}
-				id="thumb"
 				class={[
-					holding ? 'bg-secondary' : 'bg-primary',
-					'absolute top-1/2 flex h-8 w-3 -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center justify-center rounded-xl shadow transition select-none'
+					'pointer-events-none absolute top-1/2 -translate-x-1/2 translate-y-3 rounded px-2 py-0',
+					'neon neon-lg box-neon',
+					markValue < value && 'neon-secondary'
 				]}
-				style:left="{percent * 100}%"
-				bind:this={thumb}
-				ontouchstart={vteh(onDragStart)}
-				onmousedown={vmeh(onDragStart)}
-				onmouseover={() => (thumbHover = true)}
-				onfocus={() => (thumbHover = true)}
-				onmouseout={() => (thumbHover = false)}
-				onblur={() => (thumbHover = false)}
+				in:fly={{ y: 7, duration: 200 }}
+				out:fade={{ duration: 100 }}
+				style:left="{((markValue - min) / (max - min)) * 100}%"
 			>
-				{#if tooltip && (holding || thumbHover)}
-					<div class="tooltip" in:fly={{ y: 7, duration: 200 }} out:fade={{ duration: 100 }}>
-						{tooltip(value)}
-					</div>
-				{/if}
-			</button>
-		</div>
+				{label}
+			</div>
+		{/each}
 	</div>
 </div>
 
@@ -286,32 +307,5 @@
 		background-color: rgba(255, 0, 0, 0);
 		z-index: 10000;
 		cursor: grabbing;
-	}
-
-	.tooltip {
-		pointer-events: none;
-		position: absolute;
-		top: -33px;
-		color: var(--tooltip-text, white);
-		width: 38px;
-		padding: 4px 0;
-		border-radius: 4px;
-		text-align: center;
-		background-color: var(--tooltip-bgcolor, #6185ff);
-		background: var(--tooltip-bg, linear-gradient(45deg, #6185ff, #9c65ff));
-	}
-
-	.tooltip::after {
-		content: '';
-		display: block;
-		position: absolute;
-		height: 7px;
-		width: 7px;
-		background-color: var(--tooltip-bgcolor, #6185ff);
-		bottom: -3px;
-		left: calc(50% - 3px);
-		clip-path: polygon(0% 0%, 100% 100%, 0% 100%);
-		transform: rotate(-45deg);
-		border-radius: 0 0 0 3px;
 	}
 </style>

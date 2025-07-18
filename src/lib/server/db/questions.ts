@@ -156,12 +156,6 @@ export async function addTomlToDb(toml: string) {
 	await db.transaction(async (tx) => {
 		for (const question of data.questions) {
 			await tx.delete(schema.question).where(eq(schema.question.id, question.id));
-			console.log(question);
-			console.log(
-				await tx.query.question.findMany({
-					where: eq(schema.question.id, question.id)
-				})
-			);
 			await tx.insert(schema.question).values(question);
 		}
 	});

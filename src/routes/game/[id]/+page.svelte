@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
 	import type { PageProps } from './$types';
 	import NewGame from './NewGame.svelte';
 	import Game from './Game.svelte';
@@ -33,7 +32,6 @@
 						console.warn(error);
 					}
 
-					console.log({ event });
 					await invalidateAll();
 
 					if (done) {
@@ -45,7 +43,7 @@
 	});
 </script>
 
-<main class="mx-auto flex h-full max-w-xl min-w-sm flex-col px-4 py-8">
+<main class="mx-auto flex h-full max-w-xl min-w-xs flex-col px-4 py-8">
 	{#if data.game.activeQuestion !== null}
 		<Game
 			game={{ ...data.game, activeQuestion: data.game.activeQuestion }}

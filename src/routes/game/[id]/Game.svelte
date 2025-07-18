@@ -6,13 +6,16 @@
 	import { enhance } from '$app/forms';
 	import type { Answer, Game, Question, User } from '$lib/server/db/schema';
 	import Button from '$lib/components/Button.svelte';
+	import { fly } from 'svelte/transition';
 
 	let {
 		game,
 		answer,
 		user
 	}: {
-		game: Game & { players: { player: User }[] } & { answers: Answer[] } & {
+		game: Game & { players: { player: User }[] } & {
+			answers: (Answer & { player: { username: string } })[];
+		} & {
 			activeQuestion: Question;
 		};
 		answer: Answer | null;
@@ -37,69 +40,80 @@
 	<p class="faint mb-4 text-lg font-light">Question {game.turn}</p>
 </h1>
 <h2
-	class="neon box-neon neon-sm mb-4 w-full rounded-full px-6 py-4 text-center text-2xl font-bold text-balance"
+	class="neon box-neon neon-sm mb-2 w-full rounded-full px-6 py-4 text-center text-2xl font-bold text-balance"
 >
 	{game.activeQuestion.question}
 </h2>
 
-<form
-	class="flex h-full flex-col"
-	method="post"
-	action="?/submit"
-	use:enhance={() => {
-		return async ({ update }) => {
-			await update({ invalidateAll: false, reset: false });
-		};
-	}}
->
-	<div class="mr-auto w-[70%] text-left text-balance">
-		{@html mdToHtml(game.activeQuestion.answerA)}
-	</div>
-	<Slider
-		value={answer?.value ?? 0.5}
-		locked={allAnswered || game.finished}
-		onpress={() => unsubmitButton?.click()}
-		onrelease={() => submitButton?.click()}
-		name="value"
-	/>
-	<div class="ml-auto w-[70%] text-right text-balance">
-		{@html mdToHtml(game.activeQuestion.answerB)}
-	</div>
-	<button class="hidden" formaction="?/unsubmit" bind:this={unsubmitButton}>unsumbut</button>
-	<button class="hidden" formaction="?/submit" bind:this={submitButton}>unsumbut</button>
-
-	<div class="flex-1"></div>
-</form>
-
 {#if allAnswered}
-	{@const activeAnswers = getActiveAnswers(game)}
-	{@const { overall } = calcSimilarities(unwrap(activeAnswers.monarch), activeAnswers.rest)}
-	<h2 class="neon neon-sm text-center text-2xl">
-		Overall similarity score: <br /> <span class="text-8xl font-bold">{format(overall)}</span>
-	</h2>
-	<h3>
-		Monarch's ({monarch.username}) answer
-	</h3>
-	<div>
-		<Slider value={unwrap(activeAnswers.monarch).value} locked={true} name="monarch-value" />
+	<div class="faint mr-auto mb-4 flex w-full text-left text-sm text-balance">
+		<span class="flex-1 text-left">{@html mdToHtml(game.activeQuestion.answerA)}</span>
+		<span> — </span>
+		<span class="flex-1 text-right">{@html mdToHtml(game.activeQuestion.answerB)}</span>
 	</div>
-	<h3 class="text-xl font-bold">Other answers</h3>
-	<ul>
-		{#each activeAnswers.rest as answer}
-			<li>
-				<div>
-					{game.players.find((player) => player.player.id === answer.playerId)?.player.username}'s
-					answer ({format(calcSimilarity(answer, unwrap(activeAnswers.monarch)))}
-					match)
-				</div>
-				<Slider value={answer.value} locked={true} name="{answer.playerId}-value" />
-			</li>
-		{/each}
-	</ul>
 {/if}
 
+<section class="flex h-full flex-col justify-center">
+	{#if !allAnswered}
+		<form
+			class="flex h-full flex-col justify-center"
+			method="post"
+			action="?/submit"
+			use:enhance={() => {
+				return async ({ update }) => {
+					await update({ invalidateAll: false, reset: false });
+				};
+			}}
+		>
+			<div class="mr-auto w-[70%] text-left text-lg text-balance">
+				{@html mdToHtml(game.activeQuestion.answerA)}
+			</div>
+			<Slider
+				value={answer?.value ?? 0.5}
+				locked={allAnswered || game.finished}
+				onpress={() => unsubmitButton?.click()}
+				onrelease={() => submitButton?.click()}
+				name="value"
+			/>
+			<div class="ml-auto w-[70%] text-right text-lg text-balance">
+				{@html mdToHtml(game.activeQuestion.answerB)}
+			</div>
+			<button class="hidden" formaction="?/unsubmit" bind:this={unsubmitButton}>unsumbut</button>
+			<button class="hidden" formaction="?/submit" bind:this={submitButton}>unsumbut</button>
+		</form>
+	{:else}
+		{@const activeAnswers = getActiveAnswers(game)}
+		{@const { overall, averageAnswer } = calcSimilarities(
+			unwrap(activeAnswers.monarch),
+			activeAnswers.rest
+		)}
+		<h2 class="neon neon-sm mb-8 text-center text-2xl">
+			Overall similarity score: <br /> <span class="text-8xl font-bold">{format(overall)}</span>
+		</h2>
+
+		<section>
+			<h3 class="text-xl font-bold">
+				Monarch's ({monarch.username}) answer
+			</h3>
+			<Slider value={unwrap(activeAnswers.monarch).value} locked={true} name="monarch-value" />
+			<h3 class="text-xl font-bold">Other answers</h3>
+			<Slider
+				value={averageAnswer}
+				locked={true}
+				name="average-answer-value"
+				marks={activeAnswers.rest.length > 1
+					? activeAnswers.rest.map(({ value, player }) => ({
+							value,
+							label: player.username
+						}))
+					: []}
+			/>
+		</section>
+	{/if}
+</section>
+
 {#if !game.finished}
-	<div class="flex w-full gap-2">
+	<div class="mt-8 flex w-full gap-2">
 		<form use:enhance action="?/leave" method="post" class="flex-1">
 			<Button style="danger" class="w-full py-4">
 				<span class="w-full text-center"> End game </span>
@@ -107,8 +121,10 @@
 		</form>
 
 		{#if allAnswered}
-			<form class="h-full w-full flex-2 py-4 text-center" method="post" action="?/continue">
-				<Button class="w-full rounded"><span class="w-full text-center"> Continue </span></Button>
+			<form class="h-full w-full flex-2 text-center" method="post" action="?/continue">
+				<Button class="w-full rounded py-4"
+					><span class="w-full text-center"> Continue </span></Button
+				>
 			</form>
 		{/if}
 	</div>
