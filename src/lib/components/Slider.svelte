@@ -253,9 +253,10 @@
 			<button
 				{disabled}
 				id="thumb"
-				class="{holding
-					? 'bg-secondary'
-					: 'bg-primary'} absolute top-1/2 flex h-8 w-3 -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center justify-center rounded-xl shadow transition select-none"
+				class={[
+					holding ? 'bg-secondary' : 'bg-primary',
+					'absolute top-1/2 flex h-8 w-3 -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center justify-center rounded-xl shadow transition select-none'
+				]}
 				style:left="{percent * 100}%"
 				bind:this={thumb}
 				ontouchstart={vteh(onDragStart)}

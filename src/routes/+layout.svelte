@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/state';
 	import '../app.css';
 	import '@fontsource-variable/atkinson-hyperlegible-next';
 
@@ -6,14 +7,35 @@
 </script>
 
 <div class="flex h-full flex-col">
-	<div class="bg-tertiary grid h-8 w-screen grid-cols-3 content-center text-base">
-		<div></div>
-		<a href="/" class="content-center text-center font-light"> who am i </a>
-		<div class="justify-self-end">
-			<a href="/profile" class="hover:bg-base/10 flex rounded-l-2xl px-3 py-1 transition">
-				Profile <img src="/user-icon.svg" alt="User" />
-			</a>
+	{#if page.url.pathname !== '/'}
+		<div
+			class="box-neon neon neon-secondary grid h-fit w-screen grid-cols-3 content-center outline"
+		>
+			<div></div>
+			<a href="/" class="content-center text-center font-light"> who am i </a>
+			<div class="justify-self-end">
+				<a href="/profile" class="hover:bg-base2 flex rounded-l-2xl py-1 pr-2 pl-4 transition">
+					<span class="pr-1"> Profile </span>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="24"
+						height="24"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						class="lucide lucide-user-icon lucide-user"
+						><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /><circle
+							cx="12"
+							cy="7"
+							r="4"
+						/></svg
+					>
+				</a>
+			</div>
 		</div>
-	</div>
+	{/if}
 	<div class="flex-1">{@render children()}</div>
 </div>

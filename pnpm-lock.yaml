@@ -26,6 +26,9 @@ importers:
       '@paralleldrive/cuid2':
         specifier: ^2.2.2
         version: 2.2.2
+      clsx:
+        specifier: ^2.1.1
+        version: 2.1.1
       devalue:
         specifier: ^5.1.1
         version: 5.1.1
@@ -35,6 +38,9 @@ importers:
       drizzle-zod:
         specifier: ^0.8.2
         version: 0.8.2(drizzle-orm@0.40.1(@libsql/client@0.14.0)(gel@2.1.1))(zod@4.0.5)
+      tailwind-merge:
+        specifier: ^3.3.1
+        version: 3.3.1
       zod:
         specifier: ^4.0.5
         version: 4.0.5
@@ -2308,6 +2314,9 @@ packages:
     resolution: {integrity: sha512-p7PVLQYrvCxJuxzGfOv/l71hVuHC6EZk5UDjbt/bndMYaBcUV5sFjDsj+PSIYvz1vcfbG6inX83/xIUeik1xGA==}
     engines: {node: '>=18'}
 
+  tailwind-merge@3.3.1:
+    resolution: {integrity: sha512-gBXpgUm/3rp1lMZZrM/w7D8GKqshif0zAymAhbCyIt8KMe+0v9DQ7cdYLR4FHH/cKpdTXb+A/tKKU3eolfsI+g==}
+
   tailwindcss@4.1.11:
     resolution: {integrity: sha512-2E9TBm6MDD/xKYe+dvJZAmg3yxIEDNRc0jwlNyDg/4Fil2QcSLjFKGVff0lAf1jjeaArlG/M75Ey/EYr/OJtBA==}
 
@@ -4339,6 +4348,8 @@ snapshots:
       locate-character: 3.0.0
       magic-string: 0.30.17
       zimmerframe: 1.1.2
+
+  tailwind-merge@3.3.1: {}
 
   tailwindcss@4.1.11: {}
 

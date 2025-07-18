@@ -5,6 +5,7 @@
 	import { areAllAnswered, getActiveAnswers, getMonarch } from './game';
 	import { enhance } from '$app/forms';
 	import type { Answer, Game, Question, User } from '$lib/server/db/schema';
+	import Button from '$lib/components/Button.svelte';
 
 	let {
 		game,
@@ -35,7 +36,9 @@
 	{monarch.id === user.id ? 'you' : monarch.username}
 	<p class="faint mb-4 text-lg font-light">Question {game.turn}</p>
 </h1>
-<h2 class="bg-base2 mb-4 w-full py-4 text-center text-2xl font-bold text-balance">
+<h2
+	class="neon box-neon neon-sm mb-4 w-full rounded-full px-6 py-4 text-center text-2xl font-bold text-balance"
+>
 	{game.activeQuestion.question}
 </h2>
 
@@ -71,7 +74,7 @@
 {#if allAnswered}
 	{@const activeAnswers = getActiveAnswers(game)}
 	{@const { overall } = calcSimilarities(unwrap(activeAnswers.monarch), activeAnswers.rest)}
-	<h2 class="text-center text-2xl">
+	<h2 class="neon neon-sm text-center text-2xl">
 		Overall similarity score: <br /> <span class="text-8xl font-bold">{format(overall)}</span>
 	</h2>
 	<h3>
@@ -97,20 +100,15 @@
 
 {#if !game.finished}
 	<div class="flex w-full gap-2">
-		<form use:enhance action="?/leave" method="post" class="h-full flex-1">
-			<button
-				class="w-full rounded bg-red-200 px-[1em] py-[0.3em] text-base transition hover:bg-red-300"
-			>
-				Leave game
-			</button>
+		<form use:enhance action="?/leave" method="post" class="flex-1">
+			<Button style="danger" class="w-full py-4">
+				<span class="w-full text-center"> End game </span>
+			</Button>
 		</form>
 
 		{#if allAnswered}
-			<form class="h-full w-full flex-2" method="post" action="?/continue">
-				<button
-					class="bg-primary hover:bg-secondary w-full rounded px-[1em] py-[0.3em] text-base transition"
-					>Continue</button
-				>
+			<form class="h-full w-full flex-2 py-4 text-center" method="post" action="?/continue">
+				<Button class="w-full rounded"><span class="w-full text-center"> Continue </span></Button>
 			</form>
 		{/if}
 	</div>

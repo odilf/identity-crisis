@@ -2,20 +2,35 @@
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 
+@property --glow-opacity {
+	syntax: "<number> | <percentage>";
+	inherits: true;
+	initial-value: 100%;
+}
+
+@property --glow-multiplier {
+	syntax: "<number> | <percentage>";
+	inherits: true;
+	initial-value: 1;
+}
+
 @theme {
 	--color-base: oklch(0.1095 0.0592 329.82);
 	--color-base2: oklch(0.2595 0.1592 282.82);
 	--color-base3: oklch(0.8595 0.0592 282.82);
-	--color-primary: oklch(0.9967 0.0292 90.18);
-	--color-secondary: oklch(0.9 0.1 100.18);
+
+	--color-primary: oklch(0.9832 0.0653 137.12);
+	--color-secondary: oklch(0.8632 0.3108 137.12);
 	--color-tertiary: oklch(0.89 0.05 242.18);
+
+	--color-glow-base: oklch(0.9132 0.2195 160.1355);
+	--color-white-base: oklch(0.9926 0.0222 110.65);
 }
 
 body {
 	font-family: 'Atkinson Hyperlegible Next Variable', sans-serif;
 
 	background-color: var(--color-base);
-	/* background: linear-gradient(210deg, var(--color-base), var(--color-base2)); */
 	color: var(--color-primary);
 	height: 100vh;
 	height: 100dvh;
@@ -24,4 +39,118 @@ body {
 
 .faint {
 	opacity: 50%;
+}
+
+.neon-md {
+	--white-glow-base-size: 0.1px;
+	--green-glow-base-size: 4.2px;
+}
+
+.neon-sm {
+	--white-glow-base-size: 0.05px;
+	--green-glow-base-size: 2.1px;
+}
+
+.neon-lg {
+	--white-glow-base-size: 1px;
+	--green-glow-base-size: 42px;
+}
+
+.neon-em-xl {
+	--white-glow-base-size: 0.01em;
+	--green-glow-base-size: 0.4em;
+}
+
+.neon-red {
+	--color-glow-base: red;
+	--color-white-base: red;
+}
+
+.neon-secondary {
+	--color-glow-base: oklch(0.8838 0.2911 333);
+	--color-white-base: white;
+}
+
+.neon {
+	animation: flicker 4.2s infinite alternate step-end,
+		pulsate 5s infinite alternate ease-in-out;
+	animation-composition: accumulate;
+
+	/* Multiply by 0.3 to counteract the adding of the animations. I think */
+	--glow-mult: calc(var(--glow-multiplier) * 0.3);
+	--glow-opc: calc(var(--glow-opacity) * 0.3);
+
+	--color-glow: color-mix(in oklch, var(--color-glow-base) var(--glow-opc), transparent);
+	--color-white: color-mix(in oklch, var(--color-white-base) var(--glow-opc), transparent);
+
+
+	text-shadow:
+		0 0 calc((var(--white-glow-base-size) * 1) * var(--glow-mult)) var(--color-white),
+		0 0 calc((var(--white-glow-base-size) * 2) * var(--glow-mult)) var(--color-white),
+		0 0 calc((var(--white-glow-base-size) * 3) * var(--glow-mult)) var(--color-white),
+		0 0 calc((var(--green-glow-base-size) + 00px) * var(--glow-mult)) var(--color-glow),
+		0 0 calc((var(--green-glow-base-size) + 20px) * var(--glow-mult)) var(--color-glow),
+		0 0 calc((var(--green-glow-base-size) + 40px) * var(--glow-mult)) var(--color-glow),
+		0 0 calc((var(--green-glow-base-size) + 60px) * var(--glow-mult)) var(--color-glow),
+		0 0 calc((var(--green-glow-base-size) + 80px) * var(--glow-mult)) var(--color-glow);
+}
+
+.box-neon {
+	box-shadow:
+		0 0 calc((var(--white-glow-base-size) * 1) * var(--glow-mult)) var(--color-white),
+		0 0 calc((var(--white-glow-base-size) * 2) * var(--glow-mult)) var(--color-white),
+		0 0 calc((var(--green-glow-base-size) * 0.3) * var(--glow-mult)) var(--color-glow),
+		0 0 calc((var(--green-glow-base-size) * 0.4) * var(--glow-mult)) var(--color-glow),
+		0 0 calc((var(--green-glow-base-size) * 0.5) * var(--glow-mult)) var(--color-glow),
+		inset 0 0 calc(var(--green-glow-base-size) * 0.3 * var(--glow-mult)) var(--color-glow);
+}
+
+@media screen and (prefers-reduced-motion) {
+	.neon {
+		animation: none;
+	}
+}
+
+@keyframes flicker {
+
+	0%,
+	1%,
+	3%,
+	4%,
+	6%,
+	19%,
+	21%,
+	24%,
+	50%,
+	53%,
+	55%,
+	68%,
+	70%,
+	100% {
+		--glow-opacity: 100%;
+		--glow-multiplier: 1;
+	}
+
+	2%,
+	5%,
+	20%,
+	22%,
+	54%,
+	69% {
+		--glow-opacity: 80%;
+		--glow-multiplier: 0.5;
+	}
+
+}
+
+@keyframes pulsate {
+	100% {
+		--glow-opacity: 100%;
+		--glow-multiplier: 5;
+	}
+
+	0% {
+		--glow-opacity: 0%;
+		--glow-multiplier: 0.7;
+	}
 }

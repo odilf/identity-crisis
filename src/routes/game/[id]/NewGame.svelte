@@ -14,8 +14,22 @@
 		<p>Hosted by {game.host.username}</p>
 		<p class="faint mb-1">id: {game.id}</p>
 		<Button onclick={async () => await navigator.clipboard.writeText(page.url.toString())}>
-			<div>Copy link</div>
-			<img src="/copy-link.svg" alt="copy link" />
+			<div class="pr-2">Copy link</div>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				width="24"
+				height="24"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				class="py-[1px]"
+				><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" /><path
+					d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
+				/></svg
+			>
 		</Button>
 
 		<p class="faint mt-2">{page.url.toString()}</p>
@@ -33,20 +47,18 @@
 
 <div class="flex-1"></div>
 
-{#if game.hostId === user.id}
-	<form use:enhance action="?/start" method="post">
-		<Button
-			class="bg-primary hover:bg-secondary mt-4 flex w-full cursor-pointer gap-2 rounded px-[1em] py-4 text-base transition"
-		>
-			<span class="w-full text-center"> Start game </span>
+<div class="flex w-full gap-2">
+	{#if game.hostId === user.id && game.players.length > 1}
+		<form class="flex-1" use:enhance action="?/start" method="post">
+			<Button class="w-full py-4">
+				<span class="w-full text-center"> Start game </span>
+			</Button>
+		</form>
+	{/if}
+
+	<form use:enhance action="?/leave" method="post" class="flex-1">
+		<Button class="w-full py-4" style="danger">
+			<span class="w-full text-center"> Leave game </span>
 		</Button>
 	</form>
-{/if}
-
-<form use:enhance action="?/leave" method="post">
-	<Button
-		class="mt-4 flex w-1/2 cursor-pointer gap-2 rounded bg-red-300 px-[1em] py-4 text-base transition hover:bg-red-600"
-	>
-		<span class="w-full text-center"> Leave game </span>
-	</Button>
-</form>
+</div>
