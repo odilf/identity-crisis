@@ -5,8 +5,8 @@
   ...
 }:
 let
-  cfg = config.services.who-am-i;
-  who-am-i-pkg = pkgs.callPackage ./default.nix { };
+  cfg = config.services.identity-crisis;
+  identity-crisis-pkg = pkgs.callPackage ./default.nix { };
 
   # Taken from immich
   commonServiceConfig = {
@@ -37,8 +37,8 @@ let
   };
 in
 {
-  options.services.who-am-i = {
-    enable = lib.mkEnableOption "who-am-i";
+  options.services.identity-crisis = {
+    enable = lib.mkEnableOption "identity-crisis";
     port = lib.mkOption {
       type = lib.types.int;
       default = 1821;
@@ -58,16 +58,16 @@ in
     node-package = lib.mkPackageOption pkgs "node" { };
   };
 
-  config.systemd.services.who-am-i = lib.mkIf cfg.enable {
+  config.systemd.services.identity-crisis = lib.mkIf cfg.enable {
     description = "Countdown timer";
     after = [ "network.target" ];
     wantedBy = [ "multi-user.target" ];
 
     serviceConfig = commonServiceConfig // {
-      ExecStart = "${pkgs.nodejs}/bin/node ${who-am-i-pkg}/build";
-      StateDirectory = "who-am-i";
-      SyslogIdentifier = "who-am-i";
-      RuntimeDirectory = "who-am-i";
+      ExecStart = "${pkgs.nodejs}/bin/node ${identity-crisis-pkg}/build";
+      StateDirectory = "identity-crisis";
+      SyslogIdentifier = "identity-crisis";
+      RuntimeDirectory = "identity-crisis";
     };
 
     environment = {

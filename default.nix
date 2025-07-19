@@ -6,7 +6,7 @@
   lib,
 }:
 stdenv.mkDerivation (finalAttrs: rec {
-  pname = "who-am-i";
+  pname = "identity-crisis";
   version = "0.1.0";
 
   src = lib.cleanSource ./.;

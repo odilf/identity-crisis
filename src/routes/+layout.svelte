@@ -13,7 +13,7 @@
 		<div></div>
 		<a href="/" class="content-center text-center font-light">
 			{#if page.url.pathname !== '/'}
-				who am i
+				identity crisis
 			{/if}
 		</a>
 		<div class="justify-self-end">

@@ -10,7 +10,7 @@
 			class="box-neon neon neon-em-xl mx-auto w-fit rounded-2xl px-16 py-6 text-center text-[10vw] font-thin"
 			in:blur
 		>
-			who am i
+			identity crisis
 		</h1>
 		<div class="appear-down mt-16 flex justify-center gap-14 text-3xl">
 			<form use:enhance action="/game?/createGame" method="post">
