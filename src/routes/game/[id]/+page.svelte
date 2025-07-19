@@ -8,6 +8,7 @@
 	import { invalidateAll } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { eventSchema } from './event';
+	import { unwrap } from '$lib/utils';
 
 	let { data }: PageProps = $props();
 
@@ -26,13 +27,22 @@
 
 					const string = decoder.decode(value);
 					const object = devalue.parse(string);
-					const { success, data: event, error } = z.safeParse(eventSchema, object);
+					const result = z.safeParse(eventSchema, object);
 
-					if (!success) {
-						console.warn(error);
+					if (!result.success) {
+						console.warn(result.error);
 					}
 
-					await invalidateAll();
+					const event = unwrap(result.data);
+
+					// Ignore self-events
+					if ('playerId' in event && event.playerId === data.user.id) {
+						return;
+					}
+
+					if (event)
+						// TODO: Update using data from event instead of invalidating all always.
+						await invalidateAll();
 
 					if (done) {
 						return;
@@ -45,11 +55,15 @@
 
 <main class="mx-auto flex h-full max-w-xl min-w-xs flex-col px-4 py-8">
 	{#if data.game.activeQuestion !== null}
-		<Game
-			game={{ ...data.game, activeQuestion: data.game.activeQuestion }}
-			answer={data.answer}
-			user={data.user}
-		/>
+		{#if data.game.turn === null}
+			Invalid state (active question isn't null but game turn is)
+		{:else}
+			<Game
+				game={{ ...data.game, activeQuestion: data.game.activeQuestion, turn: data.game.turn }}
+				answer={data.answer}
+				user={data.user}
+			/>
+		{/if}
 	{:else}
 		<NewGame {...data} />
 	{/if}

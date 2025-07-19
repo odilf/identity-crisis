@@ -8,16 +8,15 @@ export const load: PageServerLoad = async ({}) => {
 	const user = requireLoginInsideLoad();
 
 	// Redirect if already in game
-	const gameResult = (
-		await db
-			.select()
-			.from(schema.game)
-			.innerJoin(schema.gamePlayers, eq(schema.game.id, schema.gamePlayers.gameId))
-			.where(and(eq(schema.gamePlayers.playerId, user.id), eq(schema.game.finished, false)))
-			.limit(1)
-	)[0];
-	if (gameResult !== undefined) {
-		throw redirect(302, `/game/${gameResult.game.id}`);
+	const games = await db
+		.select()
+		.from(schema.game)
+		.innerJoin(schema.gamePlayers, eq(schema.game.id, schema.gamePlayers.gameId))
+		.where(and(eq(schema.gamePlayers.playerId, user.id), eq(schema.game.finished, false)));
+
+	if (games.length > 0) {
+		console.log("db inside /game/", games)
+		throw redirect(302, `/game/${games[0].game.id}`);
 	}
 
 	const openGames = await db.query.game.findMany({

@@ -1,7 +1,5 @@
-import { unwrap } from '$lib/utils';
-
-export function getMonarch<P>(game: { players: P[]; turn: number | null }) {
-	return game.players[unwrap(game.turn) % game.players.length];
+export function getMonarch<P>(game: { players: P[]; turn: number }) {
+	return game.players[game.turn % game.players.length];
 }
 
 export function getAllActiveAnswers<A extends { index: number }>(game: {
@@ -14,7 +12,7 @@ export function getAllActiveAnswers<A extends { index: number }>(game: {
 export function getActiveAnswers<
 	A extends { index: number; playerId: string },
 	P extends { player: { id: string } }
->(game: { answers: A[]; players: P[]; turn: number | null }) {
+>(game: { answers: A[]; players: P[]; turn: number }) {
 	const allActiveAnswers = getAllActiveAnswers(game);
 	const monarch = getMonarch(game);
 	return {
@@ -26,7 +24,7 @@ export function getActiveAnswers<
 export function areAllAnswered<
 	A extends { index: number; playerId: string },
 	P extends { player: { id: string } }
->(game: { answers: A[]; players: P[]; turn: number | null }) {
+>(game: { answers: A[]; players: P[]; turn: number }) {
 	const activeAnswers = getActiveAnswers(game);
 	return activeAnswers.rest.length + (activeAnswers.monarch ? 1 : 0) >= game.players.length;
 }

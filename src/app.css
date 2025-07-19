@@ -3,13 +3,13 @@
 @plugin '@tailwindcss/typography';
 
 @property --glow-opacity {
-	syntax: "<number> | <percentage>";
+	syntax: '<number> | <percentage>';
 	inherits: true;
 	initial-value: 100%;
 }
 
 @property --glow-multiplier {
-	syntax: "<number> | <percentage>";
+	syntax: '<number> | <percentage>';
 	inherits: true;
 	initial-value: 1;
 }
@@ -83,7 +83,8 @@ body {
 }
 
 .neon {
-	animation: flicker 4.2s infinite alternate step-end,
+	animation:
+		flicker 4.2s infinite alternate step-end,
 		pulsate 5s infinite alternate ease-in-out;
 	animation-composition: accumulate;
 
@@ -117,8 +118,7 @@ body {
 
 .box-neon-bottom-big {
 	--color-glow: color-mix(in oklch, var(--color-glow-base) var(--glow-opc), transparent);
-	box-shadow:
-		0 0 calc((var(--green-glow-base-size) * 10) * var(--glow-mult)) var(--color-glow);
+	box-shadow: 0 0 calc((var(--green-glow-base-size) * 10) * var(--glow-mult)) var(--color-glow);
 	text-shadow: none;
 }
 
@@ -129,7 +129,6 @@ body {
 }
 
 @keyframes flicker {
-
 	0%,
 	1%,
 	3%,
@@ -157,7 +156,6 @@ body {
 		--glow-opacity: 80%;
 		--glow-multiplier: 0.5;
 	}
-
 }
 
 @keyframes pulsate {

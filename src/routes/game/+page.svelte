@@ -18,7 +18,8 @@
 	<ul>
 		{#each data.openGames as openGame}
 			<li class="bg-primary w-fit rounded p-2 text-base">
-				<a href="/game/{openGame.id}">
+				<!-- TODO: Remove `sveltekit-preload-data=false` when adding PINs for games -->
+				<a href="/game/{openGame.id}" data-sveltekit-preload-data={false}>
 					<div class="font-bold">{openGame.host.username}'s</div>
 					<div class="faint text-sm">ID: {openGame.id}'s</div>
 					<div>

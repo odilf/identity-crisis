@@ -28,7 +28,7 @@ export const load: PageServerLoad = async ({ params }) => {
 			answers: {
 				with: {
 					player: true
-				},
+				}
 			}
 		}
 	});
@@ -58,19 +58,20 @@ export const load: PageServerLoad = async ({ params }) => {
 	// Get player's answer, if it exists
 	let answer = null;
 	if (game.activeQuestion !== null) {
-		answer = await db.query.answer.findFirst({
-			where: (table, { eq, and }) =>
-				and(
-					eq(table.gameId, params.id),
-					eq(table.playerId, user.id),
-					eq(table.index, unwrap(game.turn))
-				)
-		}) ?? null;
+		answer =
+			(await db.query.answer.findFirst({
+				where: (table, { eq, and }) =>
+					and(
+						eq(table.gameId, params.id),
+						eq(table.playerId, user.id),
+						eq(table.index, unwrap(game.turn))
+					)
+			})) ?? null;
 	}
 
 	// Redact other answers, if not everyone has answered yet
-	if (!areAllAnswered(game)) {
-		game.answers.forEach(answer => answer.value = 0.0)
+	if (game.turn !== null && !areAllAnswered({ ...game, turn: game.turn })) {
+		game.answers.forEach((answer) => (answer.value = 0.0));
 	}
 
 	return {
@@ -100,8 +101,10 @@ async function selectQuestion(
 
 export const actions: Actions = {
 	start: async ({ params }) => {
+		const user = requireLoginInsideLoad();
 		const game = await db.query.game.findFirst({
-			where: (game, { eq, and }) => and(eq(game.id, params.id), eq(game.finished, false)),
+			where: (game, { eq, and }) =>
+				and(eq(game.id, params.id), eq(game.finished, false), eq(game.hostId, user.id)),
 			with: {
 				players: true
 			}
@@ -128,15 +131,23 @@ export const actions: Actions = {
 			return;
 		}
 
+			console.log('Removing player from game', { id: user.id, gameid: game.id });
 		if (game.activeQuestionId !== null) {
 			await db.update(schema.game).set({ finished: true });
 			_emit(params.id, { event: 'finish' });
-		} else if (game.players.length <= 1) {
+		} else if (game.players.length <= 1 || user.id === game.hostId) {
 			await db.delete(schema.game).where(eq(schema.game.id, params.id));
+			await db.delete(schema.gamePlayers).where(eq(schema.gamePlayers.gameId, params.id));
 			_emit(params.id, { event: 'playerLeave', playerId: user.id });
 			throw redirect(302, '/game');
 		} else {
-			await db.delete(schema.gamePlayers).where(eq(schema.gamePlayers.playerId, user.id));
+			// TODO: Update gamePlayer indices.
+			// If player 2 leaves after player 3 joining, player 3 should now be player 2
+
+			await db.delete(schema.gamePlayers).where(and(eq(schema.gamePlayers.gameId, params.id), eq(schema.gamePlayers.playerId, user.id)));
+
+			console.log("DB after delete", await db.select().from(schema.gamePlayers).where(eq(schema.gamePlayers.gameId, params.id)))
+
 			_emit(params.id, { event: 'playerLeave', playerId: user.id });
 			throw redirect(302, '/game');
 		}

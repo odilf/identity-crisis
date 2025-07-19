@@ -2,6 +2,7 @@
 	import { enhance } from '$app/forms';
 	import { page } from '$app/state';
 	import Button from '$lib/components/Button.svelte';
+	import { blur, fly, scale } from 'svelte/transition';
 
 	// TODO: Type variables
 	let { game, user } = $props();
@@ -32,14 +33,14 @@
 			>
 		</Button>
 
-		<p class="faint mt-2">{page.url.toString()}</p>
+		<p class="faint mt-2 mb-4">{page.url.toString()}</p>
 	</div>
 
 	<div>
 		<div class="text-2xl font-bold">Connected players</div>
 		<ol>
 			{#each game.players as player}
-				<li class="ml-5 list-decimal">{player.player.username}</li>
+				<li class="ml-5 list-decimal" transition:fly={{ x: -20 }}>{player.player.username}</li>
 			{/each}
 		</ol>
 	</div>
@@ -48,17 +49,19 @@
 <div class="flex-1"></div>
 
 <div class="flex w-full gap-2">
+	<form use:enhance action="?/leave" method="post" class="flex-1">
+		<Button class="w-full py-4" style="danger">
+			<span class="w-full text-center">
+				{game.hostId === user.id ? 'Cancel game' : 'Leave game'}
+			</span>
+		</Button>
+	</form>
+
 	{#if game.hostId === user.id && game.players.length > 1}
-		<form class="flex-1" use:enhance action="?/start" method="post">
+		<form class="flex-3" use:enhance action="?/start" method="post" in:scale={{ start: 0.8 }}>
 			<Button class="w-full py-4">
 				<span class="w-full text-center"> Start game </span>
 			</Button>
 		</form>
 	{/if}
-
-	<form use:enhance action="?/leave" method="post" class="flex-1">
-		<Button class="w-full py-4" style="danger">
-			<span class="w-full text-center"> Leave game </span>
-		</Button>
-	</form>
 </div>
