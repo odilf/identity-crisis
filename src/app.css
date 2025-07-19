@@ -2,26 +2,10 @@
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 
-@property --glow-opacity {
-	syntax: '<number> | <percentage>';
-	inherits: true;
-	initial-value: 100%;
-}
-
-@property --glow-multiplier {
-	syntax: '<number> | <percentage>';
-	inherits: true;
-	initial-value: 1;
-}
-
 @theme {
 	--color-base: oklch(0.1095 0.0592 329.82);
-	--color-base2: oklch(0.2595 0.1592 282.82);
-	--color-base3: oklch(0.8595 0.0592 282.82);
 
 	--color-primary: oklch(0.9832 0.0653 137.12);
-	--color-secondary: oklch(0.8632 0.3108 137.12);
-	--color-tertiary: oklch(0.89 0.05 242.18);
 
 	--color-glow-base: oklch(0.9132 0.2195 160.1355);
 	--color-glow: var(--color-glow-base);
@@ -43,6 +27,24 @@ body {
 
 .faint {
 	opacity: 50%;
+}
+
+.main {
+	@apply mx-auto h-full max-w-2xl min-w-sm px-4 py-8;
+}
+
+/* Neon stuff */
+
+@property --glow-opacity {
+	syntax: '<number> | <percentage>';
+	inherits: true;
+	initial-value: 100%;
+}
+
+@property --glow-multiplier {
+	syntax: '<number> | <percentage>';
+	inherits: true;
+	initial-value: 1;
 }
 
 .neon-md {
@@ -129,6 +131,7 @@ body {
 }
 
 @keyframes flicker {
+
 	0%,
 	1%,
 	3%,

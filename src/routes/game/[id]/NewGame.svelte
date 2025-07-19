@@ -50,7 +50,7 @@
 
 <div class="flex w-full gap-2">
 	<form use:enhance action="?/leave" method="post" class="flex-1">
-		<Button class="w-full py-4" style="danger">
+		<Button class="w-full py-4" buttonType="danger">
 			<span class="w-full text-center">
 				{game.hostId === user.id ? 'Cancel game' : 'Leave game'}
 			</span>

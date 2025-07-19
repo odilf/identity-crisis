@@ -51,20 +51,20 @@
 			})
 			.catch((err) => console.warn('Error while fetching promise', err));
 	});
+
+	$inspect(data.game);
 </script>
 
-<main class="mx-auto flex h-full max-w-xl min-w-xs flex-col px-4 py-8">
-	{#if data.game.activeQuestion !== null}
-		{#if data.game.turn === null}
-			Invalid state (active question isn't null but game turn is)
-		{:else}
-			<Game
-				game={{ ...data.game, activeQuestion: data.game.activeQuestion, turn: data.game.turn }}
-				answer={data.answer}
-				user={data.user}
-			/>
-		{/if}
-	{:else}
+<main class="main flex flex-col">
+	{#if data.game.activeQuestion === null}
 		<NewGame {...data} />
+	{:else if data.game.turn === null}
+		Invalid state (active question isn't null but game turn is)
+	{:else}
+		<Game
+			game={{ ...data.game, activeQuestion: data.game.activeQuestion, turn: data.game.turn }}
+			answer={data.answer}
+			user={data.user}
+		/>
 	{/if}
 </main>

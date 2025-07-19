@@ -1,12 +1,17 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { invalidateAll } from '$app/navigation';
 	import Button from '$lib/components/Button.svelte';
+	import { onDestroy } from 'svelte';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
+
+	const interval = setInterval(async () => await invalidateAll(), 3000);
+	onDestroy(() => clearTimeout(interval));
 </script>
 
-<main class="mx-auto flex h-full max-w-screen min-w-sm flex-col px-4 py-8">
+<main class="main flex flex-col">
 	<div class="mb-8">
 		<h1 class="mb-4 text-3xl">Host a game</h1>
 		<form use:enhance action="?/createGame" method="post">

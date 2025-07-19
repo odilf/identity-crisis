@@ -6,7 +6,7 @@
 	type Props = (
 		| ({ href: string } & HTMLAnchorAttributes)
 		| ({ href?: undefined } & HTMLButtonAttributes)
-	) & { children?: Snippet; class?: ClassValue; style?: 'danger' };
+	) & { children?: Snippet; class?: ClassValue; buttonType?: 'danger' };
 
 	let props: Props = $props();
 
@@ -22,12 +22,12 @@
 	<a
 		{...props}
 		href={props.href}
-		class={cn(style, props.class, props.style === 'danger' && 'neon-red hover:bg-red-300')}
+		class={cn(style, props.class, props.buttonType === 'danger' && 'neon-red hover:bg-red-300')}
 	>
 		{@render props.children?.()}
 	</a>
 {:else}
-	<button {...props} class={cn(style, props.class, props.style === 'danger' && 'neon-red')}>
+	<button {...props} class={cn(style, props.class, props.buttonType === 'danger' && 'neon-red')}>
 		{@render props.children?.()}
 	</button>
 {/if}

@@ -63,27 +63,24 @@
 	</div>
 {/if}
 
-<section class="relative flex h-full flex-col justify-center">
-	{#if !allAnswered}
-		<form
-			class="absolute inset-0 flex h-full flex-col justify-center"
-			method="post"
-			action="?/submit"
-			use:enhance={() => {
-				return async ({ update }) => {
-					await update({ invalidateAll: false, reset: false });
-				};
-			}}
-		>
-			<div
-				class="mr-auto w-[70%] text-left text-lg text-balance"
-				transition:fly|global={{ x: -50 }}
-			>
+<section class={['relative flex h-full flex-col justify-center']}>
+	<form
+		class="absolute inset-0 flex h-full flex-col justify-center"
+		method="post"
+		action="?/submit"
+		use:enhance={() => {
+			return async ({ update }) => {
+				await update({ invalidateAll: false, reset: false });
+			};
+		}}
+	>
+		{#if !allAnswered}
+			<div class="mr-auto w-[70%] text-left text-lg text-balance" transition:fly={{ x: -50 }}>
 				{@html mdToHtml(game.activeQuestion.answerA)}
 			</div>
 			<div
-				out:send|global={{ key: isMonarch ? 'monarch' : 'pleb' }}
-				in:receive|global={{ key: isMonarch ? 'monarch' : 'pleb' }}
+				out:send={{ key: isMonarch ? 'monarch' : 'pleb' }}
+				in:receive={{ key: isMonarch ? 'monarch' : 'pleb' }}
 			>
 				<Slider
 					value={answer?.value ?? 0.5}
@@ -93,16 +90,15 @@
 					name="value"
 				/>
 			</div>
-			<div
-				class="ml-auto w-[70%] text-right text-lg text-balance"
-				transition:fly|global={{ x: 50 }}
-			>
+			<div class="ml-auto w-[70%] text-right text-lg text-balance" transition:fly={{ x: 50 }}>
 				{@html mdToHtml(game.activeQuestion.answerB)}
 			</div>
 			<button class="hidden" formaction="?/unsubmit" bind:this={unsubmitButton}>unsumbut</button>
 			<button class="hidden" formaction="?/submit" bind:this={submitButton}>unsumbut</button>
-		</form>
-	{:else}
+		{/if}
+	</form>
+
+	{#if allAnswered}
 		{@const activeAnswers = getActiveAnswers(game)}
 		{@const { overall, averageAnswer } = calcSimilarities(
 			unwrap(activeAnswers.monarch),
@@ -110,43 +106,41 @@
 		)}
 		<h2
 			class="neon neon-sm mb-8 text-center text-2xl"
-			in:scale={{ duration: 3000, start: 0.5, delay: 600, easing: expoOut }}
+			in:scale|global={{ duration: 3000, start: 0.5, delay: 600, easing: expoOut }}
 			out:scale={{ duration: 500, start: 0.9 }}
 		>
 			Overall similarity score: <br /> <span class="text-8xl font-bold">{format(overall)}</span>
 		</h2>
 
-		<section>
-			<h3 class="text-xl font-bold" in:fade|global={{ duration: 400, delay: 1000 }} out:fade|global>
-				Monarch's ({monarch.username}) answer
-			</h3>
-			<div in:receive|global={{ key: 'monarch' }} out:send|global={{ key: 'monarch' }}>
-				<Slider value={unwrap(activeAnswers.monarch).value} locked={true} name="monarch-value" />
-			</div>
-			<h3 class="text-xl font-bold" in:fade|global={{ duration: 400, delay: 1000 }} out:fade|global>
-				Other answers
-			</h3>
-			<div in:receive|global={{ key: 'pleb' }} out:send|global={{ key: 'pleb' }}>
-				<Slider
-					value={averageAnswer}
-					locked={true}
-					name="average-answer-value"
-					marks={activeAnswers.rest.length > 1
-						? activeAnswers.rest.map(({ value, player }) => ({
-								value,
-								label: player.username
-							}))
-						: []}
-				/>
-			</div>
-		</section>
+		<h3 class="text-xl font-bold" in:fade|global={{ duration: 400, delay: 1000 }} out:fade>
+			Monarch's ({monarch.username}) answer
+		</h3>
+		<div in:receive|global={{ key: 'monarch' }} out:send={{ key: 'monarch' }}>
+			<Slider value={unwrap(activeAnswers.monarch).value} locked={true} name="monarch-value" />
+		</div>
+		<h3 class="text-xl font-bold" in:fade|global={{ duration: 400, delay: 1000 }} out:fade>
+			Other answers
+		</h3>
+		<div in:receive|global={{ key: 'pleb' }} out:send={{ key: 'pleb' }}>
+			<Slider
+				value={averageAnswer}
+				locked={true}
+				name="average-answer-value"
+				marks={activeAnswers.rest.length > 1
+					? activeAnswers.rest.map(({ value, player }) => ({
+							value,
+							label: player.username
+						}))
+					: []}
+			/>
+		</div>
 	{/if}
 </section>
 
 {#if !game.finished}
 	<div class="mt-8 flex w-full gap-2">
 		<form use:enhance action="?/leave" method="post" class="flex-1">
-			<Button style="danger" class="w-full py-4">
+			<Button buttonType="danger" class="w-full py-4">
 				<span class="w-full text-center"> End game </span>
 			</Button>
 		</form>
