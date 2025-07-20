@@ -4,6 +4,7 @@
   bash,
   stdenv,
   lib,
+  databaseUrl ? "file:/var/lib/identity-crisis/main.db",
 }:
 stdenv.mkDerivation (finalAttrs: rec {
   pname = "identity-crisis";
@@ -18,11 +19,15 @@ stdenv.mkDerivation (finalAttrs: rec {
 
   pnpmDeps = pnpm_10.fetchDeps {
     inherit (finalAttrs) pname version src;
-    hash = "sha256-MT0l4mACcsCEultFO+wxnGWQK+hfLVoQZcD/CVELXXw=";
+    hash = "sha256-SDQx0UmsyiZMP1vVmDxrPho/g011p8qwjhCkkZiaDaE=";
+    fetcherVersion = 2;
   };
 
   installPhase = ''
     runHook preInstall
+
+    # idk why database url is needed while building...
+    export DATABASE_URL=${databaseUrl}
 
     mkdir -p $out
 
@@ -39,6 +44,7 @@ stdenv.mkDerivation (finalAttrs: rec {
     mkdir -p $out/bin
     echo "\
     #!${bash}/bin/bash 
+    export DATABASE_URL=${databaseUrl} f
     ${nodejs}/bin/node $out/build
     " > $out/bin/${pname}
 

@@ -1,4 +1,4 @@
-import { eq, and, desc } from 'drizzle-orm'
+import { eq, desc } from 'drizzle-orm'
 import { requireLoginInsideLoad } from "$lib/server/auth"
 import { db, schema } from "$lib/server/db";
 import type { Actions, PageServerLoad } from "./$types"

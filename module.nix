@@ -64,7 +64,11 @@ in
     wantedBy = [ "multi-user.target" ];
 
     serviceConfig = commonServiceConfig // {
-      ExecStart = "${pkgs.nodejs}/bin/node ${identity-crisis-pkg}/build";
+      ExecStart = ''
+        # TODO: This can destroy the entire database!!! Not a good long term plan.
+        ${identity-crisis-pkg}/node_modules/drizzle-kit/bin.cjs push --force
+        ${pkgs.nodejs}/bin/node ${identity-crisis-pkg}/build
+      '';
       StateDirectory = "identity-crisis";
       SyslogIdentifier = "identity-crisis";
       RuntimeDirectory = "identity-crisis";
