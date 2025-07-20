@@ -1,5 +1,4 @@
 import { deepStrictEqual } from 'node:assert';
-import { readFile } from 'node:fs/promises';
 import { db, schema } from '.';
 import { eq } from 'drizzle-orm';
 import { questionSchema, type Question } from './schema';

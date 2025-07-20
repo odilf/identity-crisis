@@ -1,5 +1,9 @@
 import type { Handle } from '@sveltejs/kit';
 import * as auth from '$lib/server/auth';
+import { building } from '$app/environment';
+import { addTomlToDb } from '$lib/server/db/questions';
+import questionsToml from '../questions.toml?raw'
+
 
 const handleAuth: Handle = async ({ event, resolve }) => {
 	const sessionToken = event.cookies.get(auth.sessionCookieName);
@@ -24,3 +28,8 @@ const handleAuth: Handle = async ({ event, resolve }) => {
 };
 
 export const handle: Handle = handleAuth;
+
+if (!building) {
+	console.log("Adding questions from TOML to DB")
+	await addTomlToDb(questionsToml)
+}
