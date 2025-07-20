@@ -39,6 +39,12 @@ in
 {
   options.services.identity-crisis = {
     enable = lib.mkEnableOption "identity-crisis";
+    dataDir = lib.mkOption {
+      type = lib.types.path;
+      default = "/var/lib/identity-crisis";
+      description = "Main directory to store data";
+    };
+
     port = lib.mkOption {
       type = lib.types.int;
       default = 1821;
@@ -56,28 +62,68 @@ in
       default = null;
     };
     node-package = lib.mkPackageOption pkgs "node" { };
-  };
 
-  config.systemd.services.identity-crisis = lib.mkIf cfg.enable {
-    description = "Countdown timer";
-    after = [ "network.target" ];
-    wantedBy = [ "multi-user.target" ];
-
-    serviceConfig = commonServiceConfig // {
-      ExecStart = ''
-        # TODO: This can destroy the entire database!!! Not a good long term plan.
-        ${identity-crisis-pkg}/node_modules/drizzle-kit/bin.cjs push --force
-        ${pkgs.nodejs}/bin/node ${identity-crisis-pkg}/build
-      '';
-      StateDirectory = "identity-crisis";
-      SyslogIdentifier = "identity-crisis";
-      RuntimeDirectory = "identity-crisis";
+    user = lib.mkOption {
+      type = lib.types.str;
+      default = "identity-crisis";
+      description = "User account under which idnetity-crisis runs.";
     };
 
-    environment = {
-      "PORT" = "${toString cfg.port}";
-      "HOST" = cfg.host;
-      "ORIGIN" = lib.mkIf (cfg.origin != null) cfg.origin;
+    group = lib.mkOption {
+      type = lib.types.str;
+      default = "identity-crisis";
+      description = "Group under which identity-crisis runs.";
+    };
+  };
+
+  config = {
+    systemd.services.identity-crisis = lib.mkIf cfg.enable {
+      description = "Countdown timer";
+      after = [ "network.target" ];
+      wantedBy = [ "multi-user.target" ];
+
+      serviceConfig = commonServiceConfig // {
+        User = cfg.user;
+        Group = cfg.group;
+        WorkingDirectory = cfg.dataDir;
+
+        ExecStart = "${pkgs.nodejs}/bin/node ${identity-crisis-pkg}/build";
+        StateDirectory = "identity-crisis";
+        SyslogIdentifier = "identity-crisis";
+        RuntimeDirectory = "identity-crisis";
+
+        ReadWritePaths = [
+          cfg.dataDir
+        ];
+      };
+
+      environment = {
+        "PORT" = "${toString cfg.port}";
+        "HOST" = cfg.host;
+        "ORIGIN" = lib.mkIf (cfg.origin != null) cfg.origin;
+        "DATABASE_URL" = "file:${cfg.dataDir}/main.db";
+      };
+    };
+
+    # From forgejo
+    systemd.tmpfiles.rules = [
+      "d '${cfg.dataDir}' 0750 ${cfg.user} ${cfg.group} - -"
+    ];
+
+    # From forgejo
+    users = {
+      users = lib.mkIf (cfg.user == "identity-crisis") {
+        identity-crisis = {
+          home = cfg.dataDir;
+          useDefaultShell = true;
+          group = cfg.group;
+          isSystemUser = true;
+        };
+      };
+
+      groups = lib.mkIf (cfg.group == "identity-crisis") {
+        identity-crisis = { };
+      };
     };
   };
 }

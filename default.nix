@@ -4,7 +4,7 @@
   bash,
   stdenv,
   lib,
-  databaseUrl ? "file:/var/lib/identity-crisis/main.db",
+  databaseUrl ? "file:./main.db",
 }:
 stdenv.mkDerivation (finalAttrs: rec {
   pname = "identity-crisis";
@@ -44,7 +44,7 @@ stdenv.mkDerivation (finalAttrs: rec {
     mkdir -p $out/bin
     echo "\
     #!${bash}/bin/bash 
-    export DATABASE_URL=${databaseUrl} f
+    export DATABASE_URL=${databaseUrl}
     ${nodejs}/bin/node $out/build
     " > $out/bin/${pname}
 
