@@ -12,7 +12,7 @@
 
 	let { data }: PageProps = $props();
 
-	onMount(() => {
+	function subscribe() {
 		fetch(`/game/${data.game.id}`, { method: 'post' })
 			.then(async (response) => {
 				if (response.body === null) {
@@ -40,19 +40,25 @@
 						return;
 					}
 
-					if (event)
+					if (event) {
 						// TODO: Update using data from event instead of invalidating all always.
 						await invalidateAll();
+					}
 
 					if (done) {
-						return;
+						console.warn('Stream closed! Invalidating all.');
+						// "refresh", just in case.
+						return subscribe();
 					}
 				}
 			})
-			.catch((err) => console.warn('Error while fetching promise', err));
-	});
+			.catch((err) => {
+				console.warn('Error while fetching promise', err);
+				subscribe();
+			});
+	}
 
-	$inspect(data.game);
+	onMount(() => subscribe());
 </script>
 
 <main class="main flex flex-col">
