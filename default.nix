@@ -3,6 +3,8 @@
   pnpm_10,
   bash,
   stdenv,
+  pnpmConfigHook,
+  fetchPnpmDeps,
   lib,
   databaseUrl ? "file:./main.db",
 }:
@@ -14,13 +16,15 @@ stdenv.mkDerivation (finalAttrs: rec {
 
   nativeBuildInputs = [
     nodejs
-    pnpm_10.configHook
+    (pnpmConfigHook.override { pnpm = pnpm_10; })
+    pnpm_10
   ];
 
-  pnpmDeps = pnpm_10.fetchDeps {
+  pnpmDeps = fetchPnpmDeps {
     inherit (finalAttrs) pname version src;
-    hash = "sha256-SDQx0UmsyiZMP1vVmDxrPho/g011p8qwjhCkkZiaDaE=";
+    pnpm = pnpm_10;
     fetcherVersion = 2;
+    hash = "sha256-b679BZ2qnBw/IBOrBLh1XvVMqm/Ev8b8tah7K1Snfu4=";
   };
 
   installPhase = ''
